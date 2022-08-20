@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "vtJ/mfQzPFbOdy+ABhv0PabvLimARAO2CVd5+tm8+kk=",
+  "Source": "TestHeroku",
+  "BasePath": "_content/TestHeroku",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
