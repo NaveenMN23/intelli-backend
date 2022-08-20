@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\IntelliCRMService\\TestHeroku\\TestHeroku\\TestHeroku.csproj": {}
+    "C:\\TestHeroku\\intelli-backend\\TestHeroku\\TestHeroku.csproj": {}
   },
   "projects": {
-    "C:\\IntelliCRMService\\TestHeroku\\TestHeroku\\TestHeroku.csproj": {
+    "C:\\TestHeroku\\intelli-backend\\TestHeroku\\TestHeroku.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\IntelliCRMService\\TestHeroku\\TestHeroku\\TestHeroku.csproj",
+        "projectUniqueName": "C:\\TestHeroku\\intelli-backend\\TestHeroku\\TestHeroku.csproj",
         "projectName": "TestHeroku",
-        "projectPath": "C:\\IntelliCRMService\\TestHeroku\\TestHeroku\\TestHeroku.csproj",
+        "projectPath": "C:\\TestHeroku\\intelli-backend\\TestHeroku\\TestHeroku.csproj",
         "packagesPath": "C:\\Users\\harik\\.nuget\\packages\\",
-        "outputPath": "C:\\IntelliCRMService\\TestHeroku\\TestHeroku\\obj\\",
+        "outputPath": "C:\\TestHeroku\\intelli-backend\\TestHeroku\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\harik\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,34 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "ClosedXML": {
+              "target": "Package",
+              "version": "[0.96.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.8, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[6.22.0, )"
+            },
+            "NLog.Web.AspNetCore": {
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[6.0.6, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
