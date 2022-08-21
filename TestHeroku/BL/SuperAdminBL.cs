@@ -35,6 +35,7 @@ namespace IntelliCRMAPIService.BL
             }
             catch (Exception ex)
             {
+                _logger.LogError("CreateSubAdmin -- " + ex.Message);
                 return false;
             }
         }
