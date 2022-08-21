@@ -29,7 +29,7 @@ namespace IntelliCRMAPIService.Services
         {
             var result = await SaveUserDetails(userResponse);
 
-            if(result && userResponse.UploadFile !=null)
+            if(result!=0 && userResponse.UploadFile !=null)
             {
                 var productTable = await _excelConverter.ConvertToDataTable(userResponse.UploadFile.OpenReadStream());
 
@@ -46,10 +46,10 @@ namespace IntelliCRMAPIService.Services
                         Productname = Convert.ToString(values[1]),
                         Productprice = Convert.ToString(values[2]),
                         Qtyassign = Convert.ToString(values[3]),
-                        Useridfk = userResponse.UserId
+                        Useridfk = result
                     };
 
-                    var existingCust = _customerProductRepository.FindByCondition(e => e.Useridfk == userResponse.UserId && e.Productid == customerproduct.Productid).FirstOrDefault();
+                    var existingCust = _customerProductRepository.FindByCondition(e => e.Useridfk == result && e.Productid == customerproduct.Productid).FirstOrDefault();
                     if (existingCust != null && existingCust != default)
                     {
                         existingCust.Productprice = customerproduct.Productprice;
@@ -69,7 +69,7 @@ namespace IntelliCRMAPIService.Services
                 
             }
 
-            return result;
+            return true;
         }
 
         public async Task<bool> CreateSubAdmin(SubAdminResponse userResponse)
@@ -87,7 +87,7 @@ namespace IntelliCRMAPIService.Services
             return await GetUserDetails(email);
         }
 
-        private async Task<bool> SaveUserDetails(UserResponse userResponse)
+        private async Task<int> SaveUserDetails(UserResponse userResponse)
         {
             var checkExistinguser = _userRepository.FindByCondition(e => e.Email == userResponse.Email).FirstOrDefault();
             int userId;
@@ -168,7 +168,7 @@ namespace IntelliCRMAPIService.Services
                 _userDetailsRepository.Update(checkExistinguserdetails);
             }
 
-            return true;
+            return userId;
         }
         private async Task<bool> SaveSubAdminDetails(SubAdminResponse userResponse)
         {
