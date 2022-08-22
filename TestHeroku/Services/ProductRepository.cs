@@ -45,7 +45,7 @@ namespace IntelliCRMAPIService.Services
         {
             try
             {
-                IList<Customerproduct> result = _applicationDBContext.Customerproduct.Where(e => e.Useridfk == Convert.ToInt32(customerId) || e.Email == customerId).ToList();
+                IList<Customerproduct> result = _applicationDBContext.Customerproduct.Where(e => string.IsNullOrEmpty(customerId) || (e.Useridfk == Convert.ToInt32(customerId) || e.Email == customerId)).ToList();
 
                 return Task.FromResult(result);
             }

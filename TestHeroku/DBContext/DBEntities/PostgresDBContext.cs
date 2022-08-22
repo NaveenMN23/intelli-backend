@@ -62,6 +62,8 @@ namespace IntelliCRMAPIService.DBContext
                     .HasColumnName("qtyassign");
 
                 entity.Property(e => e.Useridfk).HasColumnName("useridfk");
+                entity.Property(e => e.Email).HasColumnName("email");
+
 
                 entity.HasOne(d => d.UseridfkNavigation)
                     .WithMany(p => p.Customerproduct)

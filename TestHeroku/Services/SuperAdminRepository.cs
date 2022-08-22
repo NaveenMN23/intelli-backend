@@ -204,7 +204,7 @@ namespace IntelliCRMAPIService.Services
                 checkExistinguser.Contactnumber = userResponse.ContactNumber;
                 checkExistinguser.Email = userResponse.Email;
                 checkExistinguser.Firstname = userResponse.FirstName;
-                checkExistinguser.Salt = userResponse.Salt;
+                //checkExistinguser.Salt = userResponse.Salt;
                 checkExistinguser.Lastname = userResponse.LastName;
                 //checkExistinguser.Password = userResponse.Password;
                 checkExistinguser.Accounttype = userResponse.AccountType;

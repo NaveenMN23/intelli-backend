@@ -44,8 +44,9 @@ namespace IntelliCRMAPIService.BL
         {
             try
             {
+                customerId = customerId == "*" ? "" : customerId;
                 var result = await _productRepository.GetCustomerProductDetails(customerId);
-                return result;
+                return result;  
             }
             catch (Exception ex)
             {
