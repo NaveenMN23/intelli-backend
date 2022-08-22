@@ -128,6 +128,9 @@ namespace IntelliCRMAPIService.DBContext
                     .HasColumnName("userid")
                     .UseIdentityAlwaysColumn();
 
+                entity.Property(e => e.Priority)
+                    .HasColumnName("priority");
+
                 entity.Property(e => e.Accountstatus).HasColumnName("accountstatus");
 
                 entity.Property(e => e.Accounttype).HasColumnName("accounttype");

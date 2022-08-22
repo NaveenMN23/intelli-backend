@@ -7,7 +7,7 @@ namespace IntelliCRMAPIService.Services
     {
         private readonly PostgresDBContext _applicationDBContext;
         public ProductRepository(PostgresDBContext applicationDBContext)
-            :base(applicationDBContext)
+            : base(applicationDBContext)
         {
             _applicationDBContext = applicationDBContext;
         }
@@ -33,6 +33,20 @@ namespace IntelliCRMAPIService.Services
             try
             {
                 IList<Productmaster> result = FindAll().ToList();
+                return Task.FromResult(result);
+            }
+            catch (Exception ex)
+            {
+                return default;
+            }
+        }
+
+        public Task<IList<Customerproduct>> GetCustomerProductDetails(string customerId)
+        {
+            try
+            {
+                IList<Customerproduct> result = _applicationDBContext.Customerproduct.Where(e => e.Useridfk == Convert.ToInt32(customerId) || e.Email == customerId).ToList();
+
                 return Task.FromResult(result);
             }
             catch (Exception ex)

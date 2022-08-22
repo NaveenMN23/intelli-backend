@@ -26,6 +26,15 @@ namespace IntelliCRMAPIService.Controllers
             return result;
         }
 
+        [HttpGet]
+        [Route("GetCustomerProductDetails")]
+        public async Task<IList<Customerproduct>> GetCustomerProductDetails([FromForm]string customerId)
+        {
+            var result = await _productBL.GetCustomerProductDetails(customerId);
+
+            return result;
+        }
+
         [HttpPost]
         [Route("CreateProductDetails")]
         public async Task<bool> CreateProduct(List<Productmaster> productmasters)

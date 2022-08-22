@@ -39,5 +39,18 @@ namespace IntelliCRMAPIService.BL
                 return default;
             }
         }
+
+        public async Task<IList<Customerproduct>> GetCustomerProductDetails(string customerId)
+        {
+            try
+            {
+                var result = await _productRepository.GetCustomerProductDetails(customerId);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return default;
+            }
+        }
     }
 }

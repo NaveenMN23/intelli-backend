@@ -30,6 +30,7 @@ namespace IntelliCRMAPIService
         public DateTime? Createddate { get; set; }
         public string Modifiedby { get; set; }
         public DateTime? Modifieddate { get; set; }
+        public int? Priority { get; set; }
 
         [NotMapped]
         public Role Role { get; set; }

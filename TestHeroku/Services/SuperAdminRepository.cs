@@ -5,6 +5,7 @@ using IntelliCRMAPIService.Model;
 using IntelliCRMAPIService.Repository;
 using System.Data;
 using System.Linq;
+using TestHeroku.Model;
 
 namespace IntelliCRMAPIService.Services
 {
@@ -286,6 +287,38 @@ namespace IntelliCRMAPIService.Services
 
                      }
                  ).ToList();
+
+        }
+
+        public async Task<IList<CustomerPriorityResponse>> GetAllUserPriority()
+        {
+            return _applicationDBContext.Users.Where(u => u.Accounttype == 1).Select(i => new CustomerPriorityResponse()
+            {
+                Userid = i.Userid,
+                Firstname = i.Firstname,
+                Lastname = i.Lastname,
+                Priority = i.Priority??0,
+                Email = i.Email
+            }).ToList();
+        }
+
+        public async Task<bool> UpdateUserPriority(CustomerPriorityResponse customerPriorityResponse)
+        {
+            var checkExistinguser = _userRepository.FindByCondition(e => e.Userid == customerPriorityResponse.Userid).FirstOrDefault();
+
+            if (checkExistinguser != null || customerPriorityResponse != default)
+            {
+                checkExistinguser.Priority = customerPriorityResponse.Priority;
+                checkExistinguser.Modifieddate = DateTime.Now;
+                checkExistinguser.Modifiedby = customerPriorityResponse.RequestedBy;
+
+                _userRepository.Update(checkExistinguser);
+
+                return true;
+            }
+
+            return false;
+
 
         }
     }

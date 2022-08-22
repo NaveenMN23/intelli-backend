@@ -1,5 +1,6 @@
 ﻿using IntelliCRMAPIService.Model;
 using IntelliCRMAPIService.Repository;
+using TestHeroku.Model;
 
 namespace IntelliCRMAPIService.BL
 {
@@ -76,6 +77,36 @@ namespace IntelliCRMAPIService.BL
                      result = await _superAdminRepository.GetAllUserDetails(userType);
                 else
                     result = await _superAdminRepository.GetAllSubAdminUserDetails(userType);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return default;
+            }
+        }
+
+        public async Task<IList<CustomerPriorityResponse>> GetAllUserPriority()
+        {
+            try
+            {
+                IList<CustomerPriorityResponse> result = new List<CustomerPriorityResponse>();
+
+                result = await _superAdminRepository.GetAllUserPriority();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return default;
+            }
+        }
+
+        public async Task<bool> UpdateUserPriority(CustomerPriorityResponse customerPriorityResponse)
+        {
+            try
+            {
+                var result = await _superAdminRepository.UpdateUserPriority(customerPriorityResponse);
 
                 return result;
             }

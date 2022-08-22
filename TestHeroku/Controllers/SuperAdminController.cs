@@ -2,6 +2,7 @@
 using IntelliCRMAPIService.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TestHeroku.Model;
 
 namespace IntelliCRMAPIService.Controllers
 {
@@ -22,8 +23,6 @@ namespace IntelliCRMAPIService.Controllers
         [Route("CreateCustomer")]
         public async Task<bool> CreatCustomer([FromForm] UserResponse userResponse)
         {
-            _logger.LogError("controller CreatCustomer -- ");
-
             var result = await _superAdminBL.CreateCustomer(userResponse);
 
             return result;
@@ -33,7 +32,6 @@ namespace IntelliCRMAPIService.Controllers
         [Route("CreatSuperAdmin")]
         public async Task<bool> CreatSuperAdmin([FromForm] SubAdminResponse userResponse)
         {
-            _logger.LogError("controller CreateSubAdmin -- " );
 
             var result = await _superAdminBL.CreateSubAdmin(userResponse);
 
@@ -44,8 +42,6 @@ namespace IntelliCRMAPIService.Controllers
         [Route("GetCustomerDetails")]
         public async Task<UserResponse> GetCustomerDetails([FromQuery]string email)
         {
-            _logger.LogError("controller GetCustomerDetails -- ");
-
             var result = await _superAdminBL.GetCustomer(email);
 
             return result;
@@ -55,7 +51,6 @@ namespace IntelliCRMAPIService.Controllers
         [Route("GetSubAdminDetails")]
         public async Task<UserResponse> GetSubAdminDetails([FromQuery] string email)
         {
-            _logger.LogError("controller GetSubAdminDetails -- ");
 
             var result = await _superAdminBL.GetSubAdmin(email);
 
@@ -66,9 +61,28 @@ namespace IntelliCRMAPIService.Controllers
         [Route("GetAllUserDetails/{userType}")]
         public async Task<IList<UserResponse>> GetAllUserDetails(int userType)
         {
-            _logger.LogError("controller GetAllUserDetails -- ");
 
             var result = await _superAdminBL.GetAllUserDetails(userType);
+
+            return result;
+        }
+        
+        [HttpGet]
+        [Route("GetAllUserPriority")]
+        public async Task<IList<CustomerPriorityResponse>> GetAllUserPriority()
+        {
+
+            var result = await _superAdminBL.GetAllUserPriority();
+
+            return result;
+        }
+
+        [HttpPost]
+        [Route("UpdateUserPriority")]
+        public async Task<bool> UpdateUserPriority(CustomerPriorityResponse customerPriorityResponse)
+        {
+
+            var result = await _superAdminBL.UpdateUserPriority(customerPriorityResponse);
 
             return result;
         }
