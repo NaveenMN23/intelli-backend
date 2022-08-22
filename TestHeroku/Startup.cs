@@ -28,16 +28,16 @@ namespace IntelliCRMAPIService
         {
             //var _logger = services.
             //_logger.LogError("ConfigureServices");
-            services.AddCors(options =>
-            {
-                //options.AddPolicy(name: "AllowOrigin",
-                //    builder =>
-                //    {
-                //        builder.WithOrigins(Configuration.GetValue<string>("Origin"))
-                //                            .AllowAnyHeader()
-                //                            .AllowAnyMethod();
-                //    });
-            });
+            //services.AddCors(options =>
+            //{
+            //    //options.AddPolicy(name: "AllowOrigin",
+            //    //    builder =>
+            //    //    {
+            //    //        builder.WithOrigins(Configuration.GetValue<string>("Origin"))
+            //    //                            .AllowAnyHeader()
+            //    //                            .AllowAnyMethod();
+            //    //    });
+            //});
 
             services.AddAuthentication().AddJwtBearer("categories_auth_scheme", options =>
             {
@@ -142,7 +142,7 @@ namespace IntelliCRMAPIService
                 app.UseSwaggerUI();
             //}
 
-            app.UseCors(x => x.SetIsOriginAllowed(origin => origin.Contains(Configuration.GetValue<string>("Origin"))));
+            //app.UseCors(x => x.SetIsOriginAllowed(origin => origin.Contains(Configuration.GetValue<string>("Origin"))));
             //app.UseCors("AllowOrigin");
 
             app.UseRouting();
