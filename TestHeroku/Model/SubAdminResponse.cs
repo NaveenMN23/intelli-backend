@@ -14,6 +14,8 @@
         public string? AccountStatus { get; set; }
         public int? AccountType { get; set; }
         public bool? RightsForCustomerAccount { get; set; }
+        public bool? RightsForProduct { get; set; }
+        public bool? RightsForOrder { get; set; }
 
 
     }

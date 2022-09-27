@@ -26,6 +26,8 @@ namespace IntelliCRMAPIService
         public int? Accountstatus { get; set; }
         public int? Accounttype { get; set; }
         public bool? Rightsforcustomeraccount { get; set; }
+        public bool? RightsForProduct { get; set; }
+        public bool? RightsForOrder { get; set; }
         public string Createdby { get; set; }
         public DateTime? Createddate { get; set; }
         public string Modifiedby { get; set; }

@@ -40,12 +40,14 @@ namespace IntelliCRMAPIService.Utility
                 
                 var jwtToken =  tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
-                   ValidateIssuerSigningKey = true,
+                   ValidateIssuerSigningKey = false,
                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Secret)),
                    ValidAudience = _configuration.GetValue<string>("JwtTokenSettings:Audience"),
                    ValidIssuer = _configuration.GetValue<string>("JwtTokenSettings:Issuer"),
-                   ValidateIssuer = !isRefresh,
-                   ValidateAudience = !isRefresh,
+                   ValidateIssuer = false,
+                   ValidateAudience = false,
+                   ValidateLifetime = false,
+                   ValidateSignatureLast = false,
                     // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);

@@ -30,7 +30,7 @@ namespace IntelliCRMAPIService.Services
         {
             var result = await SaveUserDetails(userResponse);
 
-            if(result!=0 && userResponse.UploadFile !=null)
+            if (result != 0 && userResponse.UploadFile != null)
             {
                 var productTable = await _excelConverter.ConvertToDataTable(userResponse.UploadFile.OpenReadStream());
 
@@ -47,6 +47,7 @@ namespace IntelliCRMAPIService.Services
                         Productname = Convert.ToString(values[1]),
                         Productprice = Convert.ToString(values[2]),
                         Qtyassign = Convert.ToString(values[3]),
+                        Email = userResponse.Email,
                         Useridfk = result
                     };
 
@@ -57,6 +58,7 @@ namespace IntelliCRMAPIService.Services
                         existingCust.Qtyassign = customerproduct.Qtyassign;
                         existingCust.Modifiedby = userResponse.RequestedBy;
                         existingCust.Modifieddate = DateTime.Now;
+                        existingCust.Email = userResponse.Email;
                         _customerProductRepository.Update(existingCust);
                     }
                     else
@@ -67,7 +69,7 @@ namespace IntelliCRMAPIService.Services
                     }
 
                 }
-                
+
             }
 
             return true;
@@ -116,7 +118,7 @@ namespace IntelliCRMAPIService.Services
                 userId = user.Userid;
             }
             else
-                {
+            {
                 checkExistinguser.Accountstatus = userResponse.AccountStatus.ToLower() == "active" ? 1 : 0;
                 checkExistinguser.Contactnumber = userResponse.ContactNumber;
                 checkExistinguser.Email = userResponse.Email;
@@ -126,6 +128,8 @@ namespace IntelliCRMAPIService.Services
                 //checkExistinguser.Password = userResponse.Password;
                 checkExistinguser.Accounttype = userResponse.AccountType;
                 checkExistinguser.Rightsforcustomeraccount = userResponse.RightsForCustomerAccount;
+                checkExistinguser.RightsForOrder = userResponse.RightsForOrder;
+                checkExistinguser.RightsForProduct = userResponse.RightsForProduct;
                 checkExistinguser.Modifieddate = DateTime.Now;
                 checkExistinguser.Modifiedby = userResponse.RequestedBy;
 
@@ -189,6 +193,8 @@ namespace IntelliCRMAPIService.Services
                     Salt = userResponse.Salt,
                     Accounttype = userResponse.AccountType,
                     Rightsforcustomeraccount = userResponse.RightsForCustomerAccount,
+                    RightsForOrder = userResponse.RightsForOrder,
+                    RightsForProduct = userResponse.RightsForProduct,
                     Createdby = userResponse.RequestedBy,
                     Createddate = DateTime.Now,
                     Role = (Role)Enum.Parse(typeof(Role), userResponse.Role),
@@ -209,6 +215,8 @@ namespace IntelliCRMAPIService.Services
                 //checkExistinguser.Password = userResponse.Password;
                 checkExistinguser.Accounttype = userResponse.AccountType;
                 checkExistinguser.Rightsforcustomeraccount = userResponse.RightsForCustomerAccount;
+                checkExistinguser.RightsForOrder = userResponse.RightsForOrder;
+                checkExistinguser.RightsForProduct = userResponse.RightsForProduct;
                 checkExistinguser.Modifieddate = DateTime.Now;
                 checkExistinguser.Modifiedby = userResponse.RequestedBy;
                 checkExistinguser.Rolename = userResponse.Role;
@@ -225,12 +233,12 @@ namespace IntelliCRMAPIService.Services
         {
             var checkExistinguser = _userRepository.FindByCondition(e => e.Email == email).FirstOrDefault();
             var checkExistinguserdetails = _userDetailsRepository.FindByCondition(e => e.UseridFk == checkExistinguser.Userid).FirstOrDefault();
-            
+
 
             var customerResponse = new UserResponse
             {
                 UserId = checkExistinguser.Userid,
-                AccountStatus = checkExistinguser.Accountstatus == 1 ? "Active" :"Hold",
+                AccountStatus = checkExistinguser.Accountstatus == 1 ? "Active" : "Hold",
                 ContactNumber = checkExistinguser.Contactnumber,
                 Email = checkExistinguser.Email,
                 FirstName = checkExistinguser.Firstname,
@@ -240,6 +248,8 @@ namespace IntelliCRMAPIService.Services
                 City = checkExistinguserdetails?.City,
                 Country = checkExistinguserdetails?.Coutry,
                 RightsForCustomerAccount = checkExistinguser.Rightsforcustomeraccount,
+                RightsForOrder = checkExistinguser.RightsForOrder,
+                RightsForProduct = checkExistinguser.RightsForProduct,
                 CreditLimit = checkExistinguserdetails?.Creditlimit,
                 SoareceviedAmount = checkExistinguserdetails?.Soareceviedamount,
                 State = checkExistinguserdetails?.State
@@ -250,31 +260,8 @@ namespace IntelliCRMAPIService.Services
 
         public async Task<IList<UserResponse>> GetAllUserDetails(int userType)
         {
-           return _applicationDBContext.Users.Where(u => u.Accounttype == userType ).Join(_applicationDBContext.Userdetails, i => i.Userid, o => o.UseridFk,
-                    (i, o) => new UserResponse()
-                    {
-                        UserId = i.Userid,
-                        AccountStatus = i.Accountstatus == 1 ? "Active" : "Hold",
-                        ContactNumber = i.Contactnumber,
-                        Email = i.Email,
-                        FirstName = i.Firstname,
-                        LastName = i.Lastname,
-                        AccountType = i.Accounttype,
-                        Address = o.Address,
-                        City = o.City,
-                        Country = o.Coutry,
-                        RightsForCustomerAccount = i.Rightsforcustomeraccount,
-                        CreditLimit = o.Creditlimit,
-                        SoareceviedAmount = o.Soareceviedamount,
-                        State = o.State
-                    }
-                ).ToList();
-
-        }
-
-        public async Task<IList<UserResponse>> GetAllSubAdminUserDetails(int userType)
-        {
-            return _applicationDBContext.Users.Where(u => u.Accounttype == userType).Select( i => new UserResponse()
+            return _applicationDBContext.Users.Where(u => u.Accounttype == userType).Join(_applicationDBContext.Userdetails, i => i.Userid, o => o.UseridFk,
+                     (i, o) => new UserResponse()
                      {
                          UserId = i.Userid,
                          AccountStatus = i.Accountstatus == 1 ? "Active" : "Hold",
@@ -283,9 +270,36 @@ namespace IntelliCRMAPIService.Services
                          FirstName = i.Firstname,
                          LastName = i.Lastname,
                          AccountType = i.Accounttype,
-                         RightsForCustomerAccount = i.Rightsforcustomeraccount
-
+                         Address = o.Address,
+                         City = o.City,
+                         Country = o.Coutry,
+                         RightsForCustomerAccount = i.Rightsforcustomeraccount,
+                         RightsForOrder = i.RightsForOrder,
+                         RightsForProduct = i.RightsForProduct,
+                         CreditLimit = o.Creditlimit,
+                         SoareceviedAmount = o.Soareceviedamount,
+                         State = o.State
                      }
+                 ).ToList();
+
+        }
+
+        public async Task<IList<UserResponse>> GetAllSubAdminUserDetails(int userType)
+        {
+            return _applicationDBContext.Users.Where(u => u.Accounttype == userType).Select(i => new UserResponse()
+            {
+                UserId = i.Userid,
+                AccountStatus = i.Accountstatus == 1 ? "Active" : "Hold",
+                ContactNumber = i.Contactnumber,
+                Email = i.Email,
+                FirstName = i.Firstname,
+                LastName = i.Lastname,
+                AccountType = i.Accounttype,
+                RightsForCustomerAccount = i.Rightsforcustomeraccount,
+                RightsForOrder = i.RightsForOrder,
+                RightsForProduct = i.RightsForProduct
+
+            }
                  ).ToList();
 
         }
@@ -297,7 +311,7 @@ namespace IntelliCRMAPIService.Services
                 Userid = i.Userid,
                 Firstname = i.Firstname,
                 Lastname = i.Lastname,
-                Priority = i.Priority??0,
+                Priority = i.Priority ?? 0,
                 Email = i.Email
             }).ToList();
         }
@@ -319,6 +333,28 @@ namespace IntelliCRMAPIService.Services
 
             return false;
 
+
+        }
+
+        public async Task<bool> DeleteUserDetails(string email)
+        {
+            var checkExistinguser = _userRepository.FindByCondition(e => e.Email == email).FirstOrDefault();
+            if (checkExistinguser != null)
+            {
+                _userRepository.Delete(checkExistinguser);
+                var checkExistinguserdetails = _userDetailsRepository.FindByCondition(e => e.UseridFk == checkExistinguser.Userid).FirstOrDefault();
+
+                if (checkExistinguserdetails != null)
+                {
+                    _userDetailsRepository.Delete(checkExistinguserdetails);
+                }
+
+                _applicationDBContext.Customerproduct.RemoveRange(_customerProductRepository.FindByCondition(e => e.Useridfk == checkExistinguser.Userid));
+                _applicationDBContext.SaveChanges();
+
+            }
+
+            return true;
 
         }
     }

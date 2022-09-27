@@ -12,5 +12,6 @@ namespace IntelliCRMAPIService.BL
         Task<IList<UserResponse>> GetAllUserDetails(int userType);
         Task<IList<CustomerPriorityResponse>> GetAllUserPriority();
         Task<bool> UpdateUserPriority(CustomerPriorityResponse customerPriorityResponse);
+        Task<bool> DeleteUserDetails(string email);
     }
 }

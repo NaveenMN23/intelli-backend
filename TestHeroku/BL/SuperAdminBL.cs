@@ -115,5 +115,19 @@ namespace IntelliCRMAPIService.BL
                 return default;
             }
         }
+
+        public Task<bool> DeleteUserDetails(string email)
+        {
+            try
+            {
+                var result = await _superAdminRepository.DeleteUserDetails(email);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return default;
+            }
+        }
     }
 }

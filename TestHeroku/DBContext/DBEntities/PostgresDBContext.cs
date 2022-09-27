@@ -22,6 +22,7 @@ namespace IntelliCRMAPIService.DBContext
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Customerproduct> Customerproduct { get; set; }
         public virtual DbSet<Productmaster> Productmaster { get; set; }
+        public virtual DbSet<Orders> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -174,6 +175,10 @@ namespace IntelliCRMAPIService.DBContext
                     .HasColumnName("password");
 
                 entity.Property(e => e.Rightsforcustomeraccount).HasColumnName("rightsforcustomeraccount");
+                entity.Property(e => e.RightsForOrder).HasColumnName("rightsfororder");
+
+                entity.Property(e => e.RightsForProduct).HasColumnName("rightsforproduct");
+
 
                 entity.Property(e => e.Rolename)
                     .HasMaxLength(100)
@@ -272,6 +277,171 @@ namespace IntelliCRMAPIService.DBContext
                 entity.Property(e => e.Unitsperpack).HasColumnName("unitsperpack");
 
                 entity.Property(e => e.Weight).HasColumnName("weight");
+            });
+
+            modelBuilder.Entity<Orders>(entity =>
+            {
+                entity.ToTable("orders");
+
+                entity.Property(e => e.Ordersid)
+                    .HasColumnName("ordersid")
+                    .UseIdentityAlwaysColumn();
+
+                entity.Property(e => e.Activeingredients)
+                    .HasMaxLength(100)
+                    .HasColumnName("activeingredients");
+
+                entity.Property(e => e.Address1)
+                    .HasMaxLength(100)
+                    .HasColumnName("address1");
+
+                entity.Property(e => e.Address2)
+                    .HasMaxLength(100)
+                    .HasColumnName("address2");
+
+                entity.Property(e => e.Category)
+                    .HasMaxLength(100)
+                    .HasColumnName("category");
+
+                entity.Property(e => e.City)
+                    .HasMaxLength(100)
+                    .HasColumnName("city");
+
+                entity.Property(e => e.Createdby)
+                    .HasMaxLength(50)
+                    .HasColumnName("createdby");
+
+                entity.Property(e => e.Createddate)
+                    .HasColumnType("timestamp without time zone")
+                    .HasColumnName("createddate");
+
+                entity.Property(e => e.Customername)
+                    .HasMaxLength(100)
+                    .HasColumnName("customername");
+
+                entity.Property(e => e.Customerphonenumber)
+                    .HasMaxLength(100)
+                    .HasColumnName("customerphonenumber");
+
+                entity.Property(e => e.Date)
+                    .HasColumnType("timestamp without time zone")
+                    .HasColumnName("date");
+
+                entity.Property(e => e.Directionsofuse)
+                    .HasMaxLength(100)
+                    .HasColumnName("directionsofuse");
+
+                entity.Property(e => e.DoctorName)
+                    .HasMaxLength(100)
+                    .HasColumnName("doctorname");
+
+                entity.Property(e => e.Dosageform)
+                    .HasMaxLength(100)
+                    .HasColumnName("dosageform");
+
+                entity.Property(e => e.Emailaddress)
+                    .HasMaxLength(100)
+                    .HasColumnName("emailaddress");
+
+                entity.Property(e => e.Equsbrandname)
+                    .HasMaxLength(100)
+                    .HasColumnName("equsbrandname");
+
+                entity.Property(e => e.Modifiedby)
+                    .HasMaxLength(50)
+                    .HasColumnName("modifiedby");
+
+                entity.Property(e => e.Modifieddate)
+                    .HasColumnType("timestamp without time zone")
+                    .HasColumnName("modifieddate");
+
+                entity.Property(e => e.Nameonpackage)
+                    .HasMaxLength(100)
+                    .HasColumnName("nameonpackage");
+
+                entity.Property(e => e.Onlinepharmacy)
+                    .HasMaxLength(100)
+                    .HasColumnName("onlinepharmacy");
+
+                entity.Property(e => e.OnlinepharmacyName)
+                    .HasMaxLength(100)
+                    .HasColumnName("onlinepharmacyname");
+
+                entity.Property(e => e.Onlinepharmacyphonenumber)
+                    .HasMaxLength(100)
+                    .HasColumnName("onlinepharmacyphonenumber");
+
+                entity.Property(e => e.Ordernumber)
+                    .HasMaxLength(100)
+                    .HasColumnName("ordernumber");
+
+                entity.Property(e => e.Prescribername)
+                    .HasMaxLength(100)
+                    .HasColumnName("prescribername");
+
+                entity.Property(e => e.Prescriptionattached)
+                    .HasMaxLength(100)
+                    .HasColumnName("prescriptionattached");
+
+                entity.Property(e => e.Priceperpackclientpays)
+                    .HasMaxLength(100)
+                    .HasColumnName("priceperpackclientpays");
+
+                entity.Property(e => e.Productid).HasColumnName("productid");
+
+                entity.Property(e => e.Productsourcedfrom)
+                    .HasMaxLength(100)
+                    .HasColumnName("productsourcedfrom");
+
+                entity.Property(e => e.Province)
+                    .HasMaxLength(100)
+                    .HasColumnName("province");
+
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+                entity.Property(e => e.Referencenumber)
+                    .HasMaxLength(100)
+                    .HasColumnName("referencenumber");
+
+                entity.Property(e => e.Refill)
+                    .HasMaxLength(100)
+                    .HasColumnName("refill");
+
+                entity.Property(e => e.Remarks)
+                    .HasMaxLength(100)
+                    .HasColumnName("remarks");
+
+                entity.Property(e => e.Rxwarningcautionarynote)
+                    .HasMaxLength(100)
+                    .HasColumnName("rxwarningcautionarynote");
+
+                entity.Property(e => e.Shippingcostperorder)
+                    .HasMaxLength(100)
+                    .HasColumnName("shippingcostperorder");
+
+                entity.Property(e => e.Strength)
+                    .HasMaxLength(100)
+                    .HasColumnName("strength");
+
+                entity.Property(e => e.Totalpacksordered)
+                    .HasMaxLength(100)
+                    .HasColumnName("totalpacksordered");
+
+                entity.Property(e => e.Totalpriceclientpays)
+                    .HasMaxLength(100)
+                    .HasColumnName("totalpriceclientpays");
+
+                entity.Property(e => e.Totalpricecustomerpays)
+                    .HasMaxLength(100)
+                    .HasColumnName("totalpricecustomerpays");
+
+                entity.Property(e => e.Unitsperpack)
+                    .HasMaxLength(100)
+                    .HasColumnName("unitsperpack");
+
+                entity.Property(e => e.Zipcode)
+                    .HasMaxLength(100)
+                    .HasColumnName("zipcode");
             });
 
             foreach (var property in modelBuilder.Model.GetEntityTypes()

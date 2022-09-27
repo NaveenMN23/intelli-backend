@@ -48,6 +48,15 @@ namespace IntelliCRMAPIService.Controllers
         }
 
         [HttpGet]
+        [Route("DeleteUserDetails")]
+        public async Task<bool> DeleteUserDetails([FromQuery] string email)
+        {
+            var result = await _superAdminBL.DeleteUserDetails(email);
+
+            return result;
+        }
+
+        [HttpGet]
         [Route("GetSubAdminDetails")]
         public async Task<UserResponse> GetSubAdminDetails([FromQuery] string email)
         {
