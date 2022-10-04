@@ -13,9 +13,9 @@
         public string? Role { get; set; }
         public string? AccountStatus { get; set; }
         public int? AccountType { get; set; }
-        public bool? RightsForCustomerAccount { get; set; }
-        public bool? RightsForProduct { get; set; }
-        public bool? RightsForOrder { get; set; }
+        public bool? canEditCustomer { get; set; }
+        public bool? canEditProducts { get; set; }
+        public bool? canEditOrders { get; set; }
 
 
     }

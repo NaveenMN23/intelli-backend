@@ -14,10 +14,11 @@ namespace IntelliCRMAPIService
             catch (Exception ex)
             {
                 logger.Error($"Error occurred--{ex.Message}");
+                NLog.LogManager.Shutdown();
             }
             finally
             {
-                NLog.LogManager.Shutdown();
+
             }
             
         }

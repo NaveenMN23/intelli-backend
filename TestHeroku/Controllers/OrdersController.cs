@@ -3,6 +3,7 @@ using IntelliCRMAPIService.DBContext;
 using IntelliCRMAPIService.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TestHeroku.Model;
 
 namespace TestHeroku.Controllers
 {
@@ -21,7 +22,7 @@ namespace TestHeroku.Controllers
 
         [HttpPost]
         [Route("CreateOrder")]
-        public async Task<ActionResult<List<string>>> CreateOrder(IList<Orders> orders)
+        public async Task<ActionResult<List<string>>> CreateOrder(IList<OrderDO> orders)
         {
             var result = await _orderBL.CreateOrder(orders);
 
@@ -31,9 +32,9 @@ namespace TestHeroku.Controllers
 
         [HttpPost]
         [Route("GetOrderDetails")]
-        public async Task<ActionResult<List<Orders>>> GetOrderDetails(string customerId)
+        public async Task<ActionResult<List<OrderDO>>> GetOrderDetails(OrderRequest orderRequest)
         {
-            var result = await _orderBL.GetOrderDetails(customerId);
+            var result = await _orderBL.GetOrderDetails(orderRequest.customerId,orderRequest.status);
 
             return Ok(result);
         }

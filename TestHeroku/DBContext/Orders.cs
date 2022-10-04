@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace IntelliCRMAPIService.DBContext
 {
-    public partial class Orders
+    public partial class Orders 
     {
         public long Ordersid { get; set; }
         public DateTime? Date { get; set; }
@@ -25,24 +25,10 @@ namespace IntelliCRMAPIService.DBContext
         public string Province { get; set; }
         public string Zipcode { get; set; }
         public string Prescribername { get; set; }
-        public int Productid { get; set; }
-        public string Equsbrandname { get; set; }
-        public string Category { get; set; }
-        public string Nameonpackage { get; set; }
-        public string Strength { get; set; }
-        public string Unitsperpack { get; set; }
-        public int Quantity { get; set; }
-        public string Dosageform { get; set; }
-        public string Activeingredients { get; set; }
-        public string Productsourcedfrom { get; set; }
-        public string Totalpacksordered { get; set; }
-        public string Totalpricecustomerpays { get; set; }
-        public string Priceperpackclientpays { get; set; }
-        public string Shippingcostperorder { get; set; }
-        public string Totalpriceclientpays { get; set; }
         public string Prescriptionattached { get; set; }
         public string Directionsofuse { get; set; }
         public string Rxwarningcautionarynote { get; set; }
+        public string Status { get; set; }
         public string Remarks { get; set; }
         public string Createdby { get; set; }
         public DateTime? Createddate { get; set; } = default(DateTime?);

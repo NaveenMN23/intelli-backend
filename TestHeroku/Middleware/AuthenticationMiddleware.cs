@@ -21,7 +21,7 @@ namespace IntelliCRMAPIService.Middleware
         public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils,IConfiguration configuration)
         {
             _logger.LogInformation("Authentication started");
-            var allowAnonymous = httpContext.Request.Path.ToString().ToLower().Contains("healthcheck") || httpContext.Request.Path.ToString().ToLower().Contains("favicon.ico");
+            var allowAnonymous = httpContext.Request.Path.ToString().ToLower().Contains("healthcheck") || httpContext.Request.Path.ToString().ToLower().Contains("favicon.ico") || httpContext.Request.Method == "OPTIONS";
 
             if (!allowAnonymous)
             {

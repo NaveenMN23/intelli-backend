@@ -362,3 +362,31 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+TestHeroku/obj/staticwebassets.pack.sentinel
+TestHeroku/obj/Debug/net6.0/TestHeroku.pdb
+TestHeroku/obj/Debug/net6.0/TestHeroku.dll
+TestHeroku/obj/Debug/net6.0/TestHeroku.csproj.FileListAbsolute.txt
+TestHeroku/obj/Debug/net6.0/TestHeroku.csproj.CoreCompileInputs.cache
+TestHeroku/obj/Debug/net6.0/TestHeroku.csproj.AssemblyReference.cache
+TestHeroku/obj/Debug/net6.0/ref/TestHeroku.dll
+TestHeroku/obj/staticwebassets.pack.sentinel
+TestHeroku/obj/Debug/net6.0/TestHeroku.pdb
+TestHeroku/obj/Debug/net6.0/TestHeroku.dll
+TestHeroku/obj/Debug/net6.0/TestHeroku.csproj.FileListAbsolute.txt
+TestHeroku/obj/Debug/net6.0/TestHeroku.csproj.CoreCompileInputs.cache
+TestHeroku/obj/Debug/net6.0/TestHeroku.csproj.AssemblyReference.cache
+TestHeroku/obj/Debug/net6.0/ref/TestHeroku.dll
+TestHeroku/obj/staticwebassets.pack.sentinel
+TestHeroku/obj/Debug/net6.0/TestHeroku.pdb
+TestHeroku/obj/Debug/net6.0/TestHeroku.dll
+TestHeroku/obj/Debug/net6.0/TestHeroku.csproj.FileListAbsolute.txt
+TestHeroku/obj/Debug/net6.0/TestHeroku.csproj.CoreCompileInputs.cache
+TestHeroku/obj/Debug/net6.0/TestHeroku.csproj.AssemblyReference.cache
+TestHeroku/obj/Debug/net6.0/ref/TestHeroku.dll
+TestHeroku/bin/Debug/net6.0/TestHeroku.pdb
+TestHeroku/bin/Debug/net6.0/TestHeroku.dll
+TestHeroku/bin/Debug/net6.0/ref/TestHeroku.dll
+TestHeroku/bin/Debug/net6.0/IntelliCRMAPIService-Service-Log-2022-08-21.log
+TestHeroku/bin/Debug/net6.0/appsettings.Test.json
+TestHeroku/bin/Debug/net6.0/appsettings.Prod.json
+TestHeroku/bin/Debug/net6.0/appsettings.Development.json

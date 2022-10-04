@@ -28,11 +28,28 @@ namespace IntelliCRMAPIService.Services
         }
 
 
-        public Task<IList<Productmaster>> GetAllProductDetails()
+        public Task<IList<Productmaster>> GetAllProductDetails(string customerId)
         {
             try
             {
-                IList<Productmaster> result = FindAll().ToList();
+                var userRole = _applicationDBContext.Users.Where(u => u.Email == customerId).FirstOrDefault()?.Rolename ?? "";
+
+
+                IList<Productmaster> result = null;
+
+                if (customerId != null && customerId.ToLower() != "customer")
+                {
+                    result= FindAll().ToList();
+                }
+                else
+                {
+                    result = _applicationDBContext.Productmaster.Join(
+                            _applicationDBContext.Customerproduct.Where(e => e.Email == customerId),
+                            p => p.Productid,
+                            c => c.Productid,
+                            (p,c) => p).ToList();
+                }
+
                 return Task.FromResult(result);
             }
             catch (Exception ex)

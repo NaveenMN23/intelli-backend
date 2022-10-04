@@ -107,7 +107,7 @@ namespace IntelliCRMAPIService.Services
                     Password = userResponse.Password,
                     Salt = userResponse.Salt,
                     Accounttype = userResponse.AccountType,
-                    Rightsforcustomeraccount = userResponse.RightsForCustomerAccount,
+                    Rightsforcustomeraccount = userResponse.canEditCustomer,
                     Createdby = userResponse.RequestedBy,
                     Createddate = DateTime.Now,
                     Role = (Role)Enum.Parse(typeof(Role), userResponse.Role),
@@ -127,9 +127,9 @@ namespace IntelliCRMAPIService.Services
                 checkExistinguser.Lastname = userResponse.LastName;
                 //checkExistinguser.Password = userResponse.Password;
                 checkExistinguser.Accounttype = userResponse.AccountType;
-                checkExistinguser.Rightsforcustomeraccount = userResponse.RightsForCustomerAccount;
-                checkExistinguser.RightsForOrder = userResponse.RightsForOrder;
-                checkExistinguser.RightsForProduct = userResponse.RightsForProduct;
+                checkExistinguser.Rightsforcustomeraccount = userResponse.canEditCustomer;
+                checkExistinguser.RightsForOrder = userResponse.canEditOrders;
+                checkExistinguser.RightsForProduct = userResponse.canEditProducts;
                 checkExistinguser.Modifieddate = DateTime.Now;
                 checkExistinguser.Modifiedby = userResponse.RequestedBy;
 
@@ -192,9 +192,9 @@ namespace IntelliCRMAPIService.Services
                     Password = userResponse.Password,
                     Salt = userResponse.Salt,
                     Accounttype = userResponse.AccountType,
-                    Rightsforcustomeraccount = userResponse.RightsForCustomerAccount,
-                    RightsForOrder = userResponse.RightsForOrder,
-                    RightsForProduct = userResponse.RightsForProduct,
+                    Rightsforcustomeraccount = userResponse.canEditCustomer,
+                    RightsForOrder = userResponse.canEditOrders,
+                    RightsForProduct = userResponse.canEditProducts,
                     Createdby = userResponse.RequestedBy,
                     Createddate = DateTime.Now,
                     Role = (Role)Enum.Parse(typeof(Role), userResponse.Role),
@@ -214,9 +214,9 @@ namespace IntelliCRMAPIService.Services
                 checkExistinguser.Lastname = userResponse.LastName;
                 //checkExistinguser.Password = userResponse.Password;
                 checkExistinguser.Accounttype = userResponse.AccountType;
-                checkExistinguser.Rightsforcustomeraccount = userResponse.RightsForCustomerAccount;
-                checkExistinguser.RightsForOrder = userResponse.RightsForOrder;
-                checkExistinguser.RightsForProduct = userResponse.RightsForProduct;
+                checkExistinguser.Rightsforcustomeraccount = userResponse.canEditCustomer;
+                checkExistinguser.RightsForOrder = userResponse.canEditOrders;
+                checkExistinguser.RightsForProduct = userResponse.canEditProducts;
                 checkExistinguser.Modifieddate = DateTime.Now;
                 checkExistinguser.Modifiedby = userResponse.RequestedBy;
                 checkExistinguser.Rolename = userResponse.Role;
@@ -247,12 +247,13 @@ namespace IntelliCRMAPIService.Services
                 Address = checkExistinguserdetails?.Address,
                 City = checkExistinguserdetails?.City,
                 Country = checkExistinguserdetails?.Coutry,
-                RightsForCustomerAccount = checkExistinguser.Rightsforcustomeraccount,
-                RightsForOrder = checkExistinguser.RightsForOrder,
-                RightsForProduct = checkExistinguser.RightsForProduct,
+                canEditCustomer = checkExistinguser.Rightsforcustomeraccount,
+                canEditOrders = checkExistinguser.RightsForOrder,
+                canEditProducts = checkExistinguser.RightsForProduct,
                 CreditLimit = checkExistinguserdetails?.Creditlimit,
                 SoareceviedAmount = checkExistinguserdetails?.Soareceviedamount,
-                State = checkExistinguserdetails?.State
+                State = checkExistinguserdetails?.State,
+                Role = checkExistinguser.Rolename
             };
 
             return customerResponse;
@@ -273,9 +274,9 @@ namespace IntelliCRMAPIService.Services
                          Address = o.Address,
                          City = o.City,
                          Country = o.Coutry,
-                         RightsForCustomerAccount = i.Rightsforcustomeraccount,
-                         RightsForOrder = i.RightsForOrder,
-                         RightsForProduct = i.RightsForProduct,
+                         canEditCustomer = i.Rightsforcustomeraccount,
+                         canEditOrders = i.RightsForOrder,
+                         canEditProducts = i.RightsForProduct,
                          CreditLimit = o.Creditlimit,
                          SoareceviedAmount = o.Soareceviedamount,
                          State = o.State
@@ -295,9 +296,9 @@ namespace IntelliCRMAPIService.Services
                 FirstName = i.Firstname,
                 LastName = i.Lastname,
                 AccountType = i.Accounttype,
-                RightsForCustomerAccount = i.Rightsforcustomeraccount,
-                RightsForOrder = i.RightsForOrder,
-                RightsForProduct = i.RightsForProduct
+                canEditCustomer = i.Rightsforcustomeraccount,
+                canEditOrders = i.RightsForOrder,
+                canEditProducts = i.RightsForProduct
 
             }
                  ).ToList();
@@ -316,22 +317,40 @@ namespace IntelliCRMAPIService.Services
             }).ToList();
         }
 
-        public async Task<bool> UpdateUserPriority(CustomerPriorityResponse customerPriorityResponse)
+        public async Task<bool> UpdateUserPriority(List<CustomerPriorityResponse> customerPriorityResponse)
         {
-            var checkExistinguser = _userRepository.FindByCondition(e => e.Userid == customerPriorityResponse.Userid).FirstOrDefault();
+            var checkExistinguser = _applicationDBContext.Users.Join(
+                customerPriorityResponse,
+                u => u.Email,
+                c => c.Email,
+                (u, c) => new Users()
+                {
+                    Email = u.Email,
+                    Accountstatus = u.Accountstatus,
+                    Accounttype = u.Accounttype,
+                    Contactnumber = u.Contactnumber,
+                    Createdby = u.Createdby,
+                    Createddate = u.Createddate,
+                    Customerproduct = u.Customerproduct,
+                    Firstname = u.Firstname,
+                    Lastname = u.Lastname,
+                    Modifiedby = u.Modifiedby,
+                    Modifieddate = u.Modifieddate,
+                    Password = u.Password,
+                    Priority = c.Priority,
+                    Rightsforcustomeraccount = u.Rightsforcustomeraccount,
+                    RightsForOrder = u.RightsForOrder,
+                    RightsForProduct = u.RightsForProduct,
+                    Role = u.Role,
+                    Rolename = u.Rolename,
+                    Salt = u.Salt
+                }
+                );
 
-            if (checkExistinguser != null || customerPriorityResponse != default)
-            {
-                checkExistinguser.Priority = customerPriorityResponse.Priority;
-                checkExistinguser.Modifieddate = DateTime.Now;
-                checkExistinguser.Modifiedby = customerPriorityResponse.RequestedBy;
+            _applicationDBContext.Users.UpdateRange(checkExistinguser);
+            _applicationDBContext.SaveChanges();
 
-                _userRepository.Update(checkExistinguser);
-
-                return true;
-            }
-
-            return false;
+            return true;
 
 
         }
@@ -341,7 +360,6 @@ namespace IntelliCRMAPIService.Services
             var checkExistinguser = _userRepository.FindByCondition(e => e.Email == email).FirstOrDefault();
             if (checkExistinguser != null)
             {
-                _userRepository.Delete(checkExistinguser);
                 var checkExistinguserdetails = _userDetailsRepository.FindByCondition(e => e.UseridFk == checkExistinguser.Userid).FirstOrDefault();
 
                 if (checkExistinguserdetails != null)
@@ -351,7 +369,7 @@ namespace IntelliCRMAPIService.Services
 
                 _applicationDBContext.Customerproduct.RemoveRange(_customerProductRepository.FindByCondition(e => e.Useridfk == checkExistinguser.Userid));
                 _applicationDBContext.SaveChanges();
-
+                _userRepository.Delete(checkExistinguser);
             }
 
             return true;

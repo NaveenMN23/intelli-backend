@@ -23,7 +23,7 @@ namespace IntelliCRMAPIService.DBContext
         public virtual DbSet<Customerproduct> Customerproduct { get; set; }
         public virtual DbSet<Productmaster> Productmaster { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
-
+        public virtual DbSet<OrdersProducts> OrdersProducts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresExtension("pg_catalog", "adminpack");
@@ -287,9 +287,7 @@ namespace IntelliCRMAPIService.DBContext
                     .HasColumnName("ordersid")
                     .UseIdentityAlwaysColumn();
 
-                entity.Property(e => e.Activeingredients)
-                    .HasMaxLength(100)
-                    .HasColumnName("activeingredients");
+
 
                 entity.Property(e => e.Address1)
                     .HasMaxLength(100)
@@ -298,10 +296,6 @@ namespace IntelliCRMAPIService.DBContext
                 entity.Property(e => e.Address2)
                     .HasMaxLength(100)
                     .HasColumnName("address2");
-
-                entity.Property(e => e.Category)
-                    .HasMaxLength(100)
-                    .HasColumnName("category");
 
                 entity.Property(e => e.City)
                     .HasMaxLength(100)
@@ -322,6 +316,10 @@ namespace IntelliCRMAPIService.DBContext
                 entity.Property(e => e.Customerphonenumber)
                     .HasMaxLength(100)
                     .HasColumnName("customerphonenumber");
+                
+                entity.Property(e => e.Status)
+                    .HasMaxLength(100)
+                    .HasColumnName("status");
 
                 entity.Property(e => e.Date)
                     .HasColumnType("timestamp without time zone")
@@ -335,17 +333,11 @@ namespace IntelliCRMAPIService.DBContext
                     .HasMaxLength(100)
                     .HasColumnName("doctorname");
 
-                entity.Property(e => e.Dosageform)
-                    .HasMaxLength(100)
-                    .HasColumnName("dosageform");
 
                 entity.Property(e => e.Emailaddress)
                     .HasMaxLength(100)
                     .HasColumnName("emailaddress");
 
-                entity.Property(e => e.Equsbrandname)
-                    .HasMaxLength(100)
-                    .HasColumnName("equsbrandname");
 
                 entity.Property(e => e.Modifiedby)
                     .HasMaxLength(50)
@@ -355,9 +347,6 @@ namespace IntelliCRMAPIService.DBContext
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("modifieddate");
 
-                entity.Property(e => e.Nameonpackage)
-                    .HasMaxLength(100)
-                    .HasColumnName("nameonpackage");
 
                 entity.Property(e => e.Onlinepharmacy)
                     .HasMaxLength(100)
@@ -383,21 +372,12 @@ namespace IntelliCRMAPIService.DBContext
                     .HasMaxLength(100)
                     .HasColumnName("prescriptionattached");
 
-                entity.Property(e => e.Priceperpackclientpays)
-                    .HasMaxLength(100)
-                    .HasColumnName("priceperpackclientpays");
-
-                entity.Property(e => e.Productid).HasColumnName("productid");
-
-                entity.Property(e => e.Productsourcedfrom)
-                    .HasMaxLength(100)
-                    .HasColumnName("productsourcedfrom");
 
                 entity.Property(e => e.Province)
                     .HasMaxLength(100)
                     .HasColumnName("province");
 
-                entity.Property(e => e.Quantity).HasColumnName("quantity");
+
 
                 entity.Property(e => e.Referencenumber)
                     .HasMaxLength(100)
@@ -415,34 +395,103 @@ namespace IntelliCRMAPIService.DBContext
                     .HasMaxLength(100)
                     .HasColumnName("rxwarningcautionarynote");
 
-                entity.Property(e => e.Shippingcostperorder)
-                    .HasMaxLength(100)
-                    .HasColumnName("shippingcostperorder");
 
-                entity.Property(e => e.Strength)
-                    .HasMaxLength(100)
-                    .HasColumnName("strength");
 
-                entity.Property(e => e.Totalpacksordered)
-                    .HasMaxLength(100)
-                    .HasColumnName("totalpacksordered");
 
-                entity.Property(e => e.Totalpriceclientpays)
-                    .HasMaxLength(100)
-                    .HasColumnName("totalpriceclientpays");
-
-                entity.Property(e => e.Totalpricecustomerpays)
-                    .HasMaxLength(100)
-                    .HasColumnName("totalpricecustomerpays");
-
-                entity.Property(e => e.Unitsperpack)
-                    .HasMaxLength(100)
-                    .HasColumnName("unitsperpack");
 
                 entity.Property(e => e.Zipcode)
                     .HasMaxLength(100)
                     .HasColumnName("zipcode");
             });
+
+
+            modelBuilder.Entity<OrdersProducts>(entity =>
+            {
+                entity.HasKey(e => e.OrderProductId)
+                    .HasName("orderproducts_pkey");
+
+                entity.ToTable("orderproducts");
+
+                entity.Property(e => e.OrderProductId)
+                    .HasColumnName("orderproductid")
+                    .UseIdentityAlwaysColumn();
+
+                entity.Property(e => e.Category)
+                .HasMaxLength(100)
+                .HasColumnName("category");
+
+                entity.Property(e => e.Dosageform)
+                        .HasMaxLength(100)
+                        .HasColumnName("dosageform");
+                
+                entity.Property(e => e.OrdersID)
+                        .HasColumnName("ordersid");
+
+                entity.Property(e => e.Equsbrandname)
+                        .HasMaxLength(100)
+                        .HasColumnName("equsbrandname");
+
+                entity.Property(e => e.Activeingredients)
+                        .HasMaxLength(100)
+                        .HasColumnName("activeingredients");
+
+                entity.Property(e => e.Totalpriceclientpays)
+                        .HasMaxLength(100)
+                        .HasColumnName("totalpriceclientpays");
+
+                entity.Property(e => e.Totalpricecustomerpays)
+                        .HasMaxLength(100)
+                        .HasColumnName("totalpricecustomerpays");
+
+                entity.Property(e => e.Unitsperpack)
+                        .HasMaxLength(100)
+                        .HasColumnName("unitsperpack");
+
+                entity.Property(e => e.Shippingcostperorder)
+                        .HasMaxLength(100)
+                        .HasColumnName("shippingcostperorder");
+
+                entity.Property(e => e.Strength)
+                        .HasMaxLength(100)
+                        .HasColumnName("strength");
+
+                entity.Property(e => e.Totalpacksordered)
+                        .HasMaxLength(100)
+                        .HasColumnName("totalpacksordered");
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+                entity.Property(e => e.Priceperpackclientpays)
+                        .HasMaxLength(100)
+                        .HasColumnName("priceperpackclientpays");
+
+                entity.Property(e => e.Productid).HasColumnName("productid");
+
+                entity.Property(e => e.Productsourcedfrom)
+                        .HasMaxLength(100)
+                        .HasColumnName("productsourcedfrom");
+
+                entity.Property(e => e.Nameonpackage)
+                        .HasMaxLength(100)
+                        .HasColumnName("nameonpackage");
+
+                entity.Property(e => e.Createdby)
+                        .HasMaxLength(50)
+                        .HasColumnName("createdby");
+
+                entity.Property(e => e.Createddate)
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("createddate");
+
+                entity.Property(e => e.Modifiedby)
+                        .HasMaxLength(50)
+                        .HasColumnName("modifiedby");
+
+                entity.Property(e => e.Modifieddate)
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modifieddate");
+
+            }
+        );
 
             foreach (var property in modelBuilder.Model.GetEntityTypes()
                  .SelectMany(t => t.GetProperties())

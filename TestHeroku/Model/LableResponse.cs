@@ -4,8 +4,12 @@
     {
         public string PharmacyName { get; set; }
         public DateTime? OrderDate { get; set; }
+        public string? OrderNo { get; set; }
+
         public string Refernce { get; set; }
         public string CustomerName { get; set; }
+        public string CustomerId { get; set; }
+
         public string Category { get; set; }
         public string NameonPackage { get; set; }
         public string Strength { get; set; }

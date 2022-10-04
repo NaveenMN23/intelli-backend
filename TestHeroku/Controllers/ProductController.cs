@@ -19,9 +19,9 @@ namespace IntelliCRMAPIService.Controllers
 
         [HttpGet]
         [Route("GetProductDetails")]
-        public async Task<IList<Productmaster>> GetProductDetails()
+        public async Task<IList<Productmaster>> GetProductDetails(string customerId)
         {
-            var result = await _productBL.GetAllProductDetails();
+            var result = await _productBL.GetAllProductDetails(customerId);
 
             return result;
         }

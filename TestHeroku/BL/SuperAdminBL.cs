@@ -102,7 +102,7 @@ namespace IntelliCRMAPIService.BL
             }
         }
 
-        public async Task<bool> UpdateUserPriority(CustomerPriorityResponse customerPriorityResponse)
+        public async Task<bool> UpdateUserPriority(List<CustomerPriorityResponse> customerPriorityResponse)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace IntelliCRMAPIService.BL
             }
         }
 
-        public Task<bool> DeleteUserDetails(string email)
+        public async Task<bool> DeleteUserDetails(string email)
         {
             try
             {

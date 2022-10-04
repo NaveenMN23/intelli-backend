@@ -36,14 +36,14 @@ namespace IntelliCRMAPIService.Services
                     new Claim(ClaimTypes.Name, userresult.Email.ToString()),
                     new Claim(ClaimTypes.NameIdentifier, userresult.Email.ToString()),
                     new Claim(ClaimTypes.Email, userresult.Email.ToString()),
-                    new Claim(ClaimTypes.Role, userresult.Role.ToString()),
+                    new Claim(ClaimTypes.Role, userresult.Rolename.ToString()),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
 
 
                 _logger.LogInformation("Token generation completed");
 
-                return CreateToken(claims.ToList());
+                return CreateToken(claims.ToList(),userresult);
             }
             catch (Exception ex)
             {
@@ -53,7 +53,7 @@ namespace IntelliCRMAPIService.Services
             }
         }
 
-        private AuthToken CreateToken(List<Claim> authClaims)
+        private AuthToken CreateToken(List<Claim> authClaims,Users users)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("JwtTokenSettings:JwtSecretKey")));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
@@ -69,6 +69,10 @@ namespace IntelliCRMAPIService.Services
             authToken.Token = new JwtSecurityTokenHandler().WriteToken(token);
             authToken.ExpirationDate = expirationDate;
             authToken.RefreshToken = GenerateRefreshToken();
+            authToken.Role = authClaims.Where(e => e.Type == ClaimTypes.Role)?.FirstOrDefault()?.Value;
+            authToken.canEditCustomer =users.Rightsforcustomeraccount;
+            authToken.canEditOrders = users.RightsForOrder;
+            authToken.canEditProducts = users.RightsForProduct;
 
             return authToken;
         }
@@ -94,7 +98,7 @@ namespace IntelliCRMAPIService.Services
                 return null;
             }
 
-            var newAccessToken = CreateToken(principal.Claims.ToList());
+            var newAccessToken = CreateToken(principal.Claims.ToList(),user);
 
             return newAccessToken;
 

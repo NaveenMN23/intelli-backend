@@ -88,7 +88,7 @@ namespace IntelliCRMAPIService.Controllers
 
         [HttpPost]
         [Route("UpdateUserPriority")]
-        public async Task<bool> UpdateUserPriority(CustomerPriorityResponse customerPriorityResponse)
+        public async Task<bool> UpdateUserPriority(List<CustomerPriorityResponse> customerPriorityResponse)
         {
 
             var result = await _superAdminBL.UpdateUserPriority(customerPriorityResponse);

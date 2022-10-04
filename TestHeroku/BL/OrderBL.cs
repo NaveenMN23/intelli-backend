@@ -1,6 +1,7 @@
 ﻿using IntelliCRMAPIService.DBContext;
 using IntelliCRMAPIService.Model;
 using IntelliCRMAPIService.Repository;
+using TestHeroku.Model;
 
 namespace IntelliCRMAPIService.BL
 {
@@ -13,7 +14,7 @@ namespace IntelliCRMAPIService.BL
             _orderRepository = orderRepository;
         }
 
-        public Task<List<string>> CreateOrder(IList<Orders> orders)
+        public Task<List<string>> CreateOrder(IList<OrderDO> orders)
         {
             try
             {
@@ -50,11 +51,11 @@ namespace IntelliCRMAPIService.BL
             }
         }
 
-        public Task<List<Orders>> GetOrderDetails(string customerId)
+        public Task<List<OrderDO>> GetOrderDetails(string customerId, string status)
         {
             try
             {
-                return _orderRepository.GetOrderDetails(customerId);
+                return _orderRepository.GetOrderDetails(customerId, status);
             }
             catch (Exception ex)
             {

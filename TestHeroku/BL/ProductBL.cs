@@ -27,11 +27,11 @@ namespace IntelliCRMAPIService.BL
         }
 
         
-        public async Task<IList<Productmaster>> GetAllProductDetails()
+        public async Task<IList<Productmaster>> GetAllProductDetails(string customerId)
         {
             try
             {
-                var result = await _productRepository.GetAllProductDetails();
+                var result = await _productRepository.GetAllProductDetails(customerId);
                 return result;
             }
             catch (Exception ex)

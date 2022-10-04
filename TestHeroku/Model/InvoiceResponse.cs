@@ -4,14 +4,20 @@
     public class InvoiceResponse
     {
         public string PharmacyName { get; set; }
+        public string PharmacyNumber { get; set; }
         public DateTime? OrderDate { get; set; }
         public string Refernce { get; set; }
         public string CustomerName { get; set; }
+        public string Country { get; set; }
+        public string City { get; set; }
+        public string CustomerId { get; set; }
         public string Address { get; set; }
         public string ClientRefernce { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public string Notes { get; set; }
         public string BatchNo { get; set; }
+        public long OrderId { get; set; }
+        public List<InvoiceProduct> InvoiceProducts { get; set; }
 
     }
 
@@ -27,5 +33,8 @@
         public string Totalpacks { get; set; }
         public string Subtotal { get; set; }
         public string Cost { get; set; }
+        public string Batch { get; set; }
+        public DateTime? ExpiryDate { get; set; }
+
     }
 }

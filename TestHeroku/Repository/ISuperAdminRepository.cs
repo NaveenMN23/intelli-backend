@@ -12,7 +12,7 @@ namespace IntelliCRMAPIService.Repository
         Task<IList<UserResponse>> GetAllUserDetails(int userType);
         Task<IList<UserResponse>> GetAllSubAdminUserDetails(int userType);
         Task<IList<CustomerPriorityResponse>> GetAllUserPriority();
-        Task<bool> UpdateUserPriority(CustomerPriorityResponse customerPriorityResponse);
+        Task<bool> UpdateUserPriority(List<CustomerPriorityResponse> customerPriorityResponse);
         Task<bool> DeleteUserDetails(string email);
     }
 }
