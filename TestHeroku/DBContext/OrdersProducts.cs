@@ -5,7 +5,7 @@ namespace IntelliCRMAPIService.DBContext
     {
         public long OrderProductId { get; set; }
         public long OrdersID { get; set; }
-        public int Productid { get; set; }
+        public string Productid { get; set; }
         public string Equsbrandname { get; set; }
         public string Category { get; set; }
         public string Nameonpackage { get; set; }

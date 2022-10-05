@@ -10,7 +10,7 @@ namespace IntelliCRMAPIService
     public partial class Productmaster
     {
         [Key]
-        public int Productid { get; set; }
+        public string Productid { get; set; }
         public string Category { get; set; }
         public string Equsbrandname { get; set; }
         public string Activeingredient { get; set; }

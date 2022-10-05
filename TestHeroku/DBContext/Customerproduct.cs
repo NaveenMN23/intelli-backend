@@ -10,7 +10,7 @@ namespace IntelliCRMAPIService
         public int Customerproductid { get; set; }
         public int? Useridfk { get; set; }
         public string? Email { get; set; }
-        public int? Productid { get; set; }
+        public string? Productid { get; set; }
         public string Productname { get; set; }
         public string Productprice { get; set; }
         public string Qtyassign { get; set; }

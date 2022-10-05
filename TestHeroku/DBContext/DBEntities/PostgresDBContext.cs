@@ -48,7 +48,9 @@ namespace IntelliCRMAPIService.DBContext
 
                 entity.Property(e => e.Modifieddate).HasColumnName("modifieddate");
 
-                entity.Property(e => e.Productid).HasColumnName("productid");
+                entity.Property(e => e.Productid)
+                    .HasMaxLength(10)
+                    .HasColumnName("productid");
 
                 entity.Property(e => e.Productname)
                     .HasMaxLength(50)
@@ -197,8 +199,8 @@ namespace IntelliCRMAPIService.DBContext
                 entity.ToTable("productmaster");
 
                 entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
-                    .UseIdentityAlwaysColumn();
+                    .HasMaxLength(10)
+                    .HasColumnName("productid");
 
                 entity.Property(e => e.Activeingredient)
                     .HasMaxLength(100)
@@ -403,7 +405,6 @@ namespace IntelliCRMAPIService.DBContext
                     .HasMaxLength(100)
                     .HasColumnName("zipcode");
             });
-
 
             modelBuilder.Entity<OrdersProducts>(entity =>
             {

@@ -292,7 +292,7 @@ namespace IntelliCRMAPIService.Services
                                 Emailaddress = o.Emailaddress,
                                 Onlinepharmacy = o.Onlinepharmacy,
                                 OnlinepharmacyName = o.OnlinepharmacyName,
-                                Onlinepharmacyphonenumber = Convert.ToInt32(o.Onlinepharmacyphonenumber),
+                                Onlinepharmacyphonenumber = o.Onlinepharmacyphonenumber,
                                 Prescribername = o.Prescribername,
                                 Prescriptionattached = o.Prescriptionattached,
                                 Province = o.Province,

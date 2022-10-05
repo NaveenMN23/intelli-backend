@@ -43,7 +43,7 @@ namespace IntelliCRMAPIService.Services
 
                     var customerproduct = new Customerproduct()
                     {
-                        Productid = Convert.ToInt32(values[0]),
+                        Productid = Convert.ToString(values[0]),
                         Productname = Convert.ToString(values[1]),
                         Productprice = Convert.ToString(values[2]),
                         Qtyassign = Convert.ToString(values[3]),

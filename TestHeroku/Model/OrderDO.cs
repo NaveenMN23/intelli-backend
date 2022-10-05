@@ -9,7 +9,7 @@
         public string Referencenumber { get; set; }
         public string? OnlinepharmacyName { get; set; }
         public string Onlinepharmacy { get; set; }
-        public int Onlinepharmacyphonenumber { get; set; }
+        public string Onlinepharmacyphonenumber { get; set; }
         public string Ordernumber { get; set; }
         public string Customername { get; set; }
         public string DoctorName { get; set; }
@@ -26,7 +26,7 @@
         public string Directionsofuse { get; set; }
         public string Rxwarningcautionarynote { get; set; }
         public string Remarks { get; set; }
-        public int Productid { get; set; }
+        public string Productid { get; set; }
         public string Equsbrandname { get; set; }
         public string Category { get; set; }
         public string Nameonpackage { get; set; }
