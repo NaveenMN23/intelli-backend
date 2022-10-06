@@ -62,5 +62,18 @@ namespace IntelliCRMAPIService.BL
                 return null;
             }
         }
+
+        public async Task<bool> UpdateOrderTracking(LableRequest request)
+        {
+            try
+            {
+                return await _orderRepository.UpdateOrderTracking(request); 
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

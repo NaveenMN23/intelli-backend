@@ -31,6 +31,7 @@ namespace IntelliCRMAPIService.DBContext
         public string Shippingcostperorder { get; set; }
         public string Totalpriceclientpays { get; set; }
         public string Status { get; set; }
+        public string TrackingNo { get; set; }
         public string Remarks { get; set; }
         public string Createdby { get; set; }
         public DateTime? Createddate { get; set; } = default(DateTime?);

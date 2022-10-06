@@ -56,5 +56,16 @@ namespace IntelliCRMAPIService.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("UpdateOrderDetails")]
+        public async Task<ActionResult<bool>> UpdateOrderTracking(LableRequest request)
+        {
+            var result = await _orderBL.UpdateOrderTracking(request);
+
+            return Ok(result);
+        }
+
+
     }
 }
