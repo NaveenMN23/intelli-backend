@@ -21,7 +21,8 @@ namespace IntelliCRMAPIService.Services
 
             try
             {
-                var customerProduct = _applicationDBContext.Customerproduct.Where(c => c.Email == orders.First().Emailaddress);
+                var email = orders.First().Emailaddress?.ToLower();
+                var customerProduct = _applicationDBContext.Customerproduct.Where(c => c.Email == email);
 
                 var productAssigmentValidation = (from o in orders
                                          join p in customerProduct on o.Productid equals p.Productid
@@ -29,7 +30,7 @@ namespace IntelliCRMAPIService.Services
                                          from t in tempOrder.DefaultIfEmpty()
                                          where t == null
                                          select o.Productid
-                                         ).ToList();
+                                         ).Distinct().ToList();
 
                 if(productAssigmentValidation.Any())
                 {
@@ -40,7 +41,7 @@ namespace IntelliCRMAPIService.Services
                                          join p in _applicationDBContext.Productmaster on o.Productid equals p.Productid
                                          where o.Quantity > p.Qty
                                          select o.Productid
-                                         ).ToList();
+                                         ).Distinct().ToList();
 
                 var invalidProduct = (from o in orders
                                                   join p in _applicationDBContext.Productmaster on o.Productid equals p.Productid
@@ -48,7 +49,7 @@ namespace IntelliCRMAPIService.Services
                                                   from t in tempOrder.DefaultIfEmpty()
                                                   where t == null
                                                   select o.Productid
-                                         ).ToList();
+                                         ).Distinct().ToList();
                 if (productAssigmentValidation.Any())
                 {
                     errorMessage.Add("Below are the invalid products. " + String.Join(",", productAssigmentValidation));
@@ -62,7 +63,7 @@ namespace IntelliCRMAPIService.Services
 
                 if(errorMessage.Any())
                 {
-                    //return errorMessage;
+                    return errorMessage;
                 }
 
 
@@ -368,12 +369,13 @@ namespace IntelliCRMAPIService.Services
 
                 for(int i=0;i<result.Count;i++)
                 {
-                    result[i].TrackingNo = request.TrackingNo;
+                    if(!string.IsNullOrEmpty(request.TrackingNo))
+                        result[i].TrackingNo = request.TrackingNo;
                     result[i].Status = request.OrderStatus;
                 }
 
                 _applicationDBContext.UpdateRange(result);
-
+                _applicationDBContext.SaveChanges();
                 return true;
 
             }

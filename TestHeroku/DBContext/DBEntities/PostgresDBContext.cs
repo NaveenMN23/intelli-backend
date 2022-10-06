@@ -290,6 +290,9 @@ namespace IntelliCRMAPIService.DBContext
                     .UseIdentityAlwaysColumn();
 
 
+                entity.Property(e => e.TrackingNo)
+                   .HasMaxLength(10)
+                   .HasColumnName("trackingno");
 
                 entity.Property(e => e.Address1)
                     .HasMaxLength(100)
