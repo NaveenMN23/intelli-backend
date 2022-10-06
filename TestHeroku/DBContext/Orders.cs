@@ -28,6 +28,8 @@ namespace IntelliCRMAPIService.DBContext
         public string Prescriptionattached { get; set; }
         public string Directionsofuse { get; set; }
         public string Rxwarningcautionarynote { get; set; }
+        public string Shippingcostperorder { get; set; }
+        public string Totalpriceclientpays { get; set; }
         public string Status { get; set; }
         public string Remarks { get; set; }
         public string Createdby { get; set; }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestHeroku.Model;
 
-namespace TestHeroku.Controllers
+namespace IntelliCRMAPIService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

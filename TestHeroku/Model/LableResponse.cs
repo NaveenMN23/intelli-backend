@@ -23,5 +23,6 @@
         public string Refill { get; set; }
         public int Quantity { get; set; }
 
+        public string TotalPacks { get; set; }
     }
 }

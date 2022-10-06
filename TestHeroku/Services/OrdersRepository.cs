@@ -106,7 +106,9 @@ namespace IntelliCRMAPIService.Services
                     Rxwarningcautionarynote = orders[0].Rxwarningcautionarynote,
                     Zipcode = orders[0].Zipcode,
                     Refill = orders[0].Refill,
-                    Status = "Confirmed"
+                    Status = "Confirmed",
+                    Shippingcostperorder = orders[0].Shippingcostperorder.ToString(),
+                    Totalpriceclientpays = orders[0].Totalpriceclientpays.ToString()
 
                 });
                 _applicationDBContext.SaveChanges();
@@ -123,9 +125,7 @@ namespace IntelliCRMAPIService.Services
                     Priceperpackclientpays = e.Priceperpackclientpays.ToString(),
                     Productid = e.Productid,
                     Productsourcedfrom = e.Productsourcedfrom,
-                    Shippingcostperorder = e.Shippingcostperorder.ToString(),
                     Totalpacksordered = e.Totalpacksordered.ToString(),
-                    Totalpriceclientpays = e.Totalpriceclientpays.ToString(),
                     Totalpricecustomerpays = e.Totalpricecustomerpays.ToString(),
                     Quantity = e.Quantity,
                     Strength = e.Strength,
@@ -170,6 +170,8 @@ namespace IntelliCRMAPIService.Services
                               CustomerId = o.Emailaddress,
                               OrderId = o.Ordersid,
                               PharmacyNumber = o.Onlinepharmacyphonenumber,
+                              ShippingCost = o.Shippingcostperorder,
+                              TotalCost = o.Totalpriceclientpays,
                               InvoiceProducts = (from op in _applicationDBContext.OrdersProducts.Where(e => e.OrdersID == o.Ordersid)
                                                  join p in _applicationDBContext.Productmaster on op.Productid equals p.Productid
                                                  select new InvoiceProduct()
@@ -178,7 +180,7 @@ namespace IntelliCRMAPIService.Services
                                                      Category = op.Category,
                                                      Cost = op.Priceperpackclientpays,
                                                      NameonPackage = p.Nameonpackage,
-                                                     Origin = null,
+                                                     Origin = op.Productsourcedfrom,
                                                      Strength = p.Strength,
                                                      Subtotal = op.Totalpricecustomerpays,
                                                      Unitspack = op.Unitsperpack,
@@ -201,12 +203,14 @@ namespace IntelliCRMAPIService.Services
                               CustomerName = o.Customername,
                               Notes = o.Rxwarningcautionarynote,
                               OrderDate = o.Date,
-                              PharmacyName = o.OnlinepharmacyName,
+                              PharmacyName = o.Onlinepharmacy,
                               Refernce = o.Referencenumber,
                               City = o.City,
                               CustomerId = o.Emailaddress,
                               OrderId = o.Ordersid,
                               PharmacyNumber = o.Onlinepharmacyphonenumber,
+                              ShippingCost = o.Shippingcostperorder,
+                              TotalCost = o.Totalpriceclientpays,
                               InvoiceProducts = (from op in _applicationDBContext.OrdersProducts.Where(e => e.OrdersID == o.Ordersid)
                                                  join p in _applicationDBContext.Productmaster on op.Productid equals p.Productid
                                                  select new InvoiceProduct()
@@ -215,7 +219,7 @@ namespace IntelliCRMAPIService.Services
                                                      Category = op.Category,
                                                      Cost = op.Priceperpackclientpays,
                                                      NameonPackage = p.Nameonpackage,
-                                                     Origin = null,
+                                                     Origin = op.Productsourcedfrom,
                                                      Strength = p.Strength,
                                                      Subtotal = op.Totalpricecustomerpays,
                                                      Unitspack = op.Unitsperpack,
@@ -260,7 +264,8 @@ namespace IntelliCRMAPIService.Services
                                 Refill = o.Refill,
                                 Rxwarningcautionarynote = o.Rxwarningcautionarynote,
                                 Strength = p.Strength,
-                                Unitsperpack = p.Unitsperpack
+                                Unitsperpack = p.Unitsperpack,
+                                TotalPacks = "3"
                             }
 
                 ).ToList();
@@ -310,9 +315,9 @@ namespace IntelliCRMAPIService.Services
                                 Priceperpackclientpays = p.Priceperpackclientpays,
                                 Productid = p.Productid,
                                 Productsourcedfrom = p.Productsourcedfrom,
-                                Shippingcostperorder = p.Shippingcostperorder,
+                                Shippingcostperorder = o.Shippingcostperorder,
                                 Totalpacksordered = p.Totalpacksordered,
-                                Totalpriceclientpays = p.Totalpriceclientpays,
+                                Totalpriceclientpays = o.Totalpriceclientpays,
                                 Totalpricecustomerpays = p.Totalpricecustomerpays,
                                 Quantity = p.Quantity,
                                 Strength = p.Strength,

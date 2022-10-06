@@ -17,6 +17,8 @@
         public string Notes { get; set; }
         public string BatchNo { get; set; }
         public long OrderId { get; set; }
+        public string ShippingCost { set; get; }
+        public string TotalCost { set; get; }
         public List<InvoiceProduct> InvoiceProducts { get; set; }
 
     }

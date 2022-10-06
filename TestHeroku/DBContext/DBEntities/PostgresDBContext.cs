@@ -318,7 +318,7 @@ namespace IntelliCRMAPIService.DBContext
                 entity.Property(e => e.Customerphonenumber)
                     .HasMaxLength(100)
                     .HasColumnName("customerphonenumber");
-                
+
                 entity.Property(e => e.Status)
                     .HasMaxLength(100)
                     .HasColumnName("status");
@@ -398,7 +398,13 @@ namespace IntelliCRMAPIService.DBContext
                     .HasColumnName("rxwarningcautionarynote");
 
 
+                entity.Property(e => e.Shippingcostperorder)
+                        .HasMaxLength(100)
+                        .HasColumnName("shippingcostperorder");
 
+                entity.Property(e => e.Totalpriceclientpays)
+                        .HasMaxLength(100)
+                        .HasColumnName("totalpriceclientpays");
 
 
                 entity.Property(e => e.Zipcode)
@@ -424,7 +430,7 @@ namespace IntelliCRMAPIService.DBContext
                 entity.Property(e => e.Dosageform)
                         .HasMaxLength(100)
                         .HasColumnName("dosageform");
-                
+
                 entity.Property(e => e.OrdersID)
                         .HasColumnName("ordersid");
 
@@ -436,10 +442,6 @@ namespace IntelliCRMAPIService.DBContext
                         .HasMaxLength(100)
                         .HasColumnName("activeingredients");
 
-                entity.Property(e => e.Totalpriceclientpays)
-                        .HasMaxLength(100)
-                        .HasColumnName("totalpriceclientpays");
-
                 entity.Property(e => e.Totalpricecustomerpays)
                         .HasMaxLength(100)
                         .HasColumnName("totalpricecustomerpays");
@@ -447,10 +449,6 @@ namespace IntelliCRMAPIService.DBContext
                 entity.Property(e => e.Unitsperpack)
                         .HasMaxLength(100)
                         .HasColumnName("unitsperpack");
-
-                entity.Property(e => e.Shippingcostperorder)
-                        .HasMaxLength(100)
-                        .HasColumnName("shippingcostperorder");
 
                 entity.Property(e => e.Strength)
                         .HasMaxLength(100)

@@ -18,8 +18,6 @@ namespace IntelliCRMAPIService.DBContext
         public string Totalpacksordered { get; set; }
         public string Totalpricecustomerpays { get; set; }
         public string Priceperpackclientpays { get; set; }
-        public string Shippingcostperorder { get; set; }
-        public string Totalpriceclientpays { get; set; }
         public string Createdby { get; set; }
         public DateTime? Createddate { get; set; } = default(DateTime?);
         public string? Modifiedby { get; set; }
