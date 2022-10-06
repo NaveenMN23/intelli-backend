@@ -34,7 +34,7 @@ namespace IntelliCRMAPIService.Services
 
                 if(productAssigmentValidation.Any())
                 {
-                    errorMessage.Add("Below are the products are not assigned to you. " + String.Join(",", productAssigmentValidation)); 
+                    errorMessage.Add($"Below are the products are not assigned to {email}. " + String.Join(",", productAssigmentValidation)); 
                 }
 
                 var productQuantityValidation = (from o in orders

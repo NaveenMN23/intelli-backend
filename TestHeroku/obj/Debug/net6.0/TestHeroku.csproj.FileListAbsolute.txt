@@ -82,3 +82,4 @@ C:\TestHeroku\intelli-backend\TestHeroku\obj\Debug\net6.0\scopedcss\bundle\TestH
 C:\TestHeroku\intelli-backend\TestHeroku\obj\Debug\net6.0\TestHeroku.csproj.CopyComplete
 C:\TestHeroku\intelli-backend\TestHeroku\obj\Debug\net6.0\TestHeroku.genruntimeconfig.cache
 C:\TestHeroku\intelli-backend\TestHeroku\bin\Debug\net6.0\nlog.config
+C:\TestHeroku\intelli-backend\TestHeroku\bin\Debug\net6.0\efpt.config.json
