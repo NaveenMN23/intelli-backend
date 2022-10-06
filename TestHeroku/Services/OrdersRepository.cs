@@ -62,7 +62,7 @@ namespace IntelliCRMAPIService.Services
 
                 if(errorMessage.Any())
                 {
-                    return errorMessage;
+                    //return errorMessage;
                 }
 
 
