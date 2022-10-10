@@ -166,25 +166,6 @@ namespace IntelliCRMAPIService.Services
 
             if (request.Orders != null && request.Orders.Count > 0)
             {
-                var test = (from op in _applicationDBContext.OrdersProducts.Where(e => e.OrdersID == 1)
-                            join p in _applicationDBContext.Productmaster on op.Productid equals p.Productid
-                            select new InvoiceProduct()
-                            {
-                                ActiveIngredient = op.Activeingredients,
-                                Category = op.Category,
-                                Cost = op.Priceperpackclientpays,
-                                NameonPackage = p.Nameonpackage,
-                                Origin = op.Productsourcedfrom,
-                                Strength = p.Strength,
-                                Subtotal = op.Totalpricecustomerpays,
-                                Unitspack = op.Unitsperpack,
-                                Totalpacks = op.Totalpacksordered,
-                                USName = p.Equsbrandname,
-                                Batch = p.Batch,
-                                ExpiryDate = p.Expirydaterange
-                            }).ToList();
-;
-
                 var orders = _applicationDBContext.Orders.Where(o => request.Orders.Contains(o.Ordersid));
 
 
@@ -217,8 +198,10 @@ namespace IntelliCRMAPIService.Services
                                                      Subtotal = op.Totalpricecustomerpays,
                                                      Unitspack = op.Unitsperpack,
                                                      Totalpacks = op.Totalpacksordered,
-                                                     USName = p.Equsbrandname
-                                                }
+                                                     USName = p.Equsbrandname,
+                                                     Batch = p.Batch,
+                                                     ExpiryDate = p.Expirydaterange
+                                                 }
                                ).ToList()
                           }
                     ).ToList();

@@ -3,6 +3,7 @@ using IntelliCRMAPIService.BL;
 using IntelliCRMAPIService.DBContext;
 using IntelliCRMAPIService.Model;
 using IntelliCRMAPIService.Repository;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Linq;
 using TestHeroku.Model;
@@ -319,40 +320,72 @@ namespace IntelliCRMAPIService.Services
 
         public async Task<bool> UpdateUserPriority(List<CustomerPriorityResponse> customerPriorityResponse)
         {
-            var checkExistinguser = _applicationDBContext.Users.Join(
-                customerPriorityResponse,
-                u => u.Email,
-                c => c.Email,
-                (u, c) => new Users()
-                {
-                    Email = u.Email,
-                    Accountstatus = u.Accountstatus,
-                    Accounttype = u.Accounttype,
-                    Contactnumber = u.Contactnumber,
-                    Createdby = u.Createdby,
-                    Createddate = u.Createddate,
-                    Customerproduct = u.Customerproduct,
-                    Firstname = u.Firstname,
-                    Lastname = u.Lastname,
-                    Modifiedby = u.Modifiedby,
-                    Modifieddate = u.Modifieddate,
-                    Password = u.Password,
-                    Priority = c.Priority,
-                    Rightsforcustomeraccount = u.Rightsforcustomeraccount,
-                    RightsForOrder = u.RightsForOrder,
-                    RightsForProduct = u.RightsForProduct,
-                    Role = u.Role,
-                    Rolename = u.Rolename,
-                    Salt = u.Salt
-                }
-                );
+            var checkExistinguser = (from cus in customerPriorityResponse
+                        join user in _applicationDBContext.Users.AsNoTracking()
+                        on cus.Userid equals user.Userid
+                        select new Users
+                        {
+                            Userid = user.Userid,
+                            Accountstatus = user.Accountstatus,
+                            Accounttype = user.Accounttype,
+                            Contactnumber = user.Contactnumber,
+                            Createdby = user.Createdby,
+                            Createddate = user.Createddate,
+                            Customerproduct = user.Customerproduct,
+                            Email = user.Email,
+                            Firstname = user.Firstname,
+                            Lastname = user.Lastname,
+                            Modifiedby = user.Modifiedby,
+                            Modifieddate = user.Modifieddate,
+                            Password = user.Password,
+                            Priority = cus.Priority,
+                            Rightsforcustomeraccount = user.Rightsforcustomeraccount,
+                            RightsForOrder = user.RightsForOrder,
+                            RightsForProduct = user.RightsForProduct,
+                            Role = user.Role,
+                            Rolename = user.Rolename,
+                            Salt = user.Salt,
+                            Userdetails = user.Userdetails
+                        }).ToList();
+                       
 
-            _applicationDBContext.Users.UpdateRange(checkExistinguser);
+            //var checkExistinguser = customerPriorityResponse.Join(
+            //    _applicationDBContext.Users,
+            //    u => u.Userid,
+            //    c => c.Userid,
+            //    (c, u) => new Users()
+            //    {
+            //        Userid = u.Userid,
+            //        Email = u.Email,
+            //        Accountstatus = u.Accountstatus,
+            //        Accounttype = u.Accounttype,
+            //        Contactnumber = u.Contactnumber,
+            //        Createdby = u.Createdby,
+            //        Createddate = u.Createddate,
+            //        Customerproduct = u.Customerproduct,
+            //        Firstname = u.Firstname,
+            //        Lastname = u.Lastname,
+            //        Modifiedby = u.Modifiedby,
+            //        Modifieddate = u.Modifieddate,
+            //        Password = u.Password,
+            //        Priority = c.Priority,
+            //        Rightsforcustomeraccount = u.Rightsforcustomeraccount,
+            //        RightsForOrder = u.RightsForOrder,
+            //        RightsForProduct = u.RightsForProduct,
+            //        Role = u.Role,
+            //        Rolename = u.Rolename,
+            //        Salt = u.Salt
+            //    }
+            //    ).ToList();
+
+            // _applicationDBContext.ChangeTracker.Entries<Users>();
+            foreach(var u in checkExistinguser)
+            {
+                _applicationDBContext.Entry(u).State = EntityState.Detached;
+                _applicationDBContext.Users.Update(u);
+            }
             _applicationDBContext.SaveChanges();
-
             return true;
-
-
         }
 
         public async Task<bool> DeleteUserDetails(string email)

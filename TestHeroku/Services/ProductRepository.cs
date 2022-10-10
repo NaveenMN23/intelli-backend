@@ -62,7 +62,9 @@ namespace IntelliCRMAPIService.Services
         {
             try
             {
-                IList<Customerproduct> result = _applicationDBContext.Customerproduct.Where(e => string.IsNullOrEmpty(customerId) || (e.Useridfk == Convert.ToInt32(customerId) || e.Email == customerId)).ToList();
+                var userRole = _applicationDBContext.Users.Where(u => u.Email == customerId).FirstOrDefault()?.Rolename ?? "";
+
+                IList<Customerproduct> result = _applicationDBContext.Customerproduct.Where(e => string.IsNullOrEmpty(customerId)|| (userRole.ToLower() != "customer") || (e.Useridfk == Convert.ToInt32(customerId) || e.Email == customerId)).ToList();
 
                 return Task.FromResult(result);
             }
