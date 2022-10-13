@@ -361,6 +361,10 @@ namespace IntelliCRMAPIService.DBContext
                     .HasMaxLength(100)
                     .HasColumnName("onlinepharmacyname");
 
+                entity.Property(e => e.Country)
+                    .HasMaxLength(100)
+                    .HasColumnName("country");
+
                 entity.Property(e => e.Onlinepharmacyphonenumber)
                     .HasMaxLength(100)
                     .HasColumnName("onlinepharmacyphonenumber");
