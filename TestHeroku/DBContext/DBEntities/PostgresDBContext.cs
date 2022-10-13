@@ -141,7 +141,7 @@ namespace IntelliCRMAPIService.DBContext
                 entity.Property(e => e.Accounttype).HasColumnName("accounttype");
 
                 entity.Property(e => e.Contactnumber)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .HasColumnName("contactnumber");
 
                 entity.Property(e => e.Createdby)
