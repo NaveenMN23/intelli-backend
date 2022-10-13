@@ -347,13 +347,50 @@ namespace IntelliCRMAPIService.Services
 
         public async Task<bool> UpdateOrderTracking(LableRequest request)
         {
+            using var transaction = _applicationDBContext.Database.BeginTransaction();
+
             try
             {
-
                 var result = _applicationDBContext.Orders.Where(o => request.Orders.Contains(o.Ordersid)).ToList();
 
+                var productdetails = _applicationDBContext.OrdersProducts.Where(o => request.Orders.Contains(o.OrdersID)).Join(
+                                    _applicationDBContext.Productmaster,
+                                    op => op.Productid,
+                                    p => p.Productid,
+                                    (op, p) =>
+                                    new Productmaster()
+                                    {
+                                        Activeingredient = p.Activeingredient,
+                                        Modifiedby = p.Modifiedby,
+                                        Batch = p.Batch,
+                                        Productid = p.Productid,
+                                        Boe = p.Boe,
+                                        Category = p.Category,
+                                        Cifpriceperpack = p.Cifpriceperpack,
+                                        Sellingpriceperpack = p.Sellingpriceperpack,
+                                        Createdby = p.Createdby,
+                                        Createddate =p.Createddate,
+                                        Dosageform = p.Dosageform,
+                                        Equsbrandname = p.Equsbrandname,
+                                        Expirydaterange = p.Expirydaterange,
+                                        Licenceholder =p.Licenceholder,
+                                        Manufacturer = p.Manufacturer,
+                                        Modifieddate = DateTime.Now,
+                                        Nameonpackage =p.Nameonpackage,
+                                        Productsourcedfrom =p.Productsourcedfrom,
+                                        RequestedBy = p.RequestedBy,
+                                        Rxwarningcautionarynote = p.Rxwarningcautionarynote,
+                                        Strength =p.Strength,
+                                        Unitsperpack =p.Unitsperpack,
+                                        Weight= p.Weight,
+                                        Qty = p.Qty - op.Quantity
+                                    });
 
-                for(int i=0;i<result.Count;i++)
+                _applicationDBContext.Productmaster.UpdateRange(productdetails);
+                _applicationDBContext.SaveChanges();
+
+
+                for (int i=0;i<result.Count;i++)
                 {
                     if (!string.IsNullOrEmpty(request.TrackingNo))
                     {
@@ -363,13 +400,17 @@ namespace IntelliCRMAPIService.Services
                     result[i].Status = request.OrderStatus;
                 }
 
-                _applicationDBContext.UpdateRange(result);
+                _applicationDBContext.Orders.UpdateRange(result);
                 _applicationDBContext.SaveChanges();
+
+                transaction.Commit();
+
                 return true;
 
             }
             catch (Exception ex)
             {
+                transaction.Rollback();
                 return false;
             }
         }
