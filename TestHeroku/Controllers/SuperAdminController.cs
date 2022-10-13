@@ -95,5 +95,15 @@ namespace IntelliCRMAPIService.Controllers
 
             return result;
         }
+
+        [HttpGet]
+        [Route("GetSOADetails")]
+        public async Task<List<SOADetails>> GetSOADetails(string customerId)
+        {
+
+            var result = await _superAdminBL.GetSOADetails(customerId);
+
+            return result;
+        }
     }
 }

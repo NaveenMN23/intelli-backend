@@ -408,5 +408,24 @@ namespace IntelliCRMAPIService.Services
             return true;
 
         }
+
+        public Task<List<SOADetails>> GetSOADetails(string customerId)
+        {
+
+            var result = (from order in _applicationDBContext.Orders
+                          join od in _applicationDBContext.OrdersProducts on order.Ordersid equals od.OrdersID
+                          where order.Status == "Completed"
+                          group od by new { order.Ordersid, order.Date, od.Productid } into users
+                          select new SOADetails()
+                          {
+                              OrderDate = users.Key.Date,
+                              OrderId = users.Key.Ordersid,
+                              TotalAmount = users.Sum(e => Convert.ToDouble(e.Totalpricecustomerpays)),
+                              Quantity = users.Sum(e => e.Quantity),
+                              ProductId = users.Key.Productid
+                          }).ToList();
+
+            return Task.FromResult(result);
+        }
     }
 }

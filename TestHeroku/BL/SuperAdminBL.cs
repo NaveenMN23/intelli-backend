@@ -129,5 +129,20 @@ namespace IntelliCRMAPIService.BL
                 return default;
             }
         }
+
+        public async Task<List<SOADetails>> GetSOADetails(string customerId)
+        {
+            try
+            {
+                var result = await _superAdminRepository.GetSOADetails(customerId);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return default;
+            }
+
+        }
     }
 }

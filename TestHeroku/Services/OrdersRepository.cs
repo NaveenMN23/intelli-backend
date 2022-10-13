@@ -352,10 +352,14 @@ namespace IntelliCRMAPIService.Services
 
                 var result = _applicationDBContext.Orders.Where(o => request.Orders.Contains(o.Ordersid)).ToList();
 
+
                 for(int i=0;i<result.Count;i++)
                 {
-                    if(!string.IsNullOrEmpty(request.TrackingNo))
+                    if (!string.IsNullOrEmpty(request.TrackingNo))
+                    {
                         result[i].TrackingNo = request.TrackingNo;
+
+                    }
                     result[i].Status = request.OrderStatus;
                 }
 
