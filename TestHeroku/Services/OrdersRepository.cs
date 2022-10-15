@@ -1,6 +1,7 @@
 ﻿using IntelliCRMAPIService.DBContext;
 using IntelliCRMAPIService.Model;
 using IntelliCRMAPIService.Repository;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using TestHeroku.Model;
 
@@ -32,7 +33,8 @@ namespace IntelliCRMAPIService.Services
                                          select o.Productid
                                          ).Distinct().ToList();
 
-                if(productAssigmentValidation.Any())
+
+                if (productAssigmentValidation.Any())
                 {
                     errorMessage.Add($"Below are the products are not assigned to {email}. " + String.Join(",", productAssigmentValidation)); 
                 }
@@ -50,7 +52,7 @@ namespace IntelliCRMAPIService.Services
                                                   where t == null
                                                   select o.Productid
                                          ).Distinct().ToList();
-                if (productAssigmentValidation.Any())
+                if (invalidProduct.Any())
                 {
                     errorMessage.Add("Below are the invalid products. " + String.Join(",", productAssigmentValidation));
                 }
@@ -339,7 +341,9 @@ namespace IntelliCRMAPIService.Services
                                 Quantity = p.Quantity,
                                 Strength = p.Strength,
                                 Unitsperpack = p.Unitsperpack,
-                                Status = o.Status
+                                Status = o.Status,
+                                TrackingNo = o.TrackingNo,
+                                Country = o.Country
                             }).ToList();
 
             return Task.FromResult(result);
@@ -353,42 +357,28 @@ namespace IntelliCRMAPIService.Services
             {
                 var result = _applicationDBContext.Orders.Where(o => request.Orders.Contains(o.Ordersid)).ToList();
 
-                var productdetails = _applicationDBContext.OrdersProducts.Where(o => request.Orders.Contains(o.OrdersID)).Join(
-                                    _applicationDBContext.Productmaster,
-                                    op => op.Productid,
-                                    p => p.Productid,
-                                    (op, p) =>
-                                    new Productmaster()
-                                    {
-                                        Activeingredient = p.Activeingredient,
-                                        Modifiedby = p.Modifiedby,
-                                        Batch = p.Batch,
-                                        Productid = p.Productid,
-                                        Boe = p.Boe,
-                                        Category = p.Category,
-                                        Cifpriceperpack = p.Cifpriceperpack,
-                                        Sellingpriceperpack = p.Sellingpriceperpack,
-                                        Createdby = p.Createdby,
-                                        Createddate =p.Createddate,
-                                        Dosageform = p.Dosageform,
-                                        Equsbrandname = p.Equsbrandname,
-                                        Expirydaterange = p.Expirydaterange,
-                                        Licenceholder =p.Licenceholder,
-                                        Manufacturer = p.Manufacturer,
-                                        Modifieddate = DateTime.Now,
-                                        Nameonpackage =p.Nameonpackage,
-                                        Productsourcedfrom =p.Productsourcedfrom,
-                                        RequestedBy = p.RequestedBy,
-                                        Rxwarningcautionarynote = p.Rxwarningcautionarynote,
-                                        Strength =p.Strength,
-                                        Unitsperpack =p.Unitsperpack,
-                                        Weight= p.Weight,
-                                        Qty = p.Qty - op.Quantity
-                                    });
+                var productdetails = _applicationDBContext.OrdersProducts.Where(o => request.Orders.Contains(o.OrdersID)).Select(
+                    e => new
+                        {
+                            Productid = e.Productid,
+                            Quantity = e.Quantity,
+                            Orderid = e.OrdersID
+                        }
+                    ).ToList();
 
-                _applicationDBContext.Productmaster.UpdateRange(productdetails);
-                _applicationDBContext.SaveChanges();
 
+                foreach (var u in productdetails)
+                {
+                    var product = _applicationDBContext.Productmaster.Where(p => p.Productid == u.Productid).FirstOrDefault();
+
+                    if (product != default && product != null)
+                    {
+                        product.Qty = product.Qty - u.Quantity;
+
+                        _applicationDBContext.Productmaster.Update(product);
+                        _applicationDBContext.SaveChanges();
+                    }
+                }
 
                 for (int i=0;i<result.Count;i++)
                 {
