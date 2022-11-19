@@ -144,5 +144,20 @@ namespace IntelliCRMAPIService.BL
             }
 
         }
+        
+        public async Task<DashBoardDetails> GetDashBoardDetails(string customerId)
+        {
+            try
+            {
+                var result = await _superAdminRepository.GetDashBoardDetails(customerId);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return default;
+            }
+
+        }
     }
 }

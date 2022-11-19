@@ -66,6 +66,15 @@ namespace IntelliCRMAPIService.Controllers
             return Ok(result);
         }
 
+        [HttpPost]
+        [Route("GetOrderDetailsByDate")]
+        public async Task<ActionResult<List<Orders>>> GetOrderDetails(DataRange request)
+        {
+            var result = await _orderBL.GetOrderDetails(request);
+
+            return Ok(result);
+        }
+
 
     }
 }

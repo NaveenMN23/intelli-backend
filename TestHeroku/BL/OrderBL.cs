@@ -75,5 +75,18 @@ namespace IntelliCRMAPIService.BL
                 return false;
             }
         }
+
+        public async Task<List<Orders>> GetOrderDetails(DataRange request)
+        {
+            try
+            {
+                return await _orderRepository.GetOrderDetails(request); 
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

@@ -427,5 +427,31 @@ namespace IntelliCRMAPIService.Services
 
             return Task.FromResult(result);
         }
+        public Task<DashBoardDetails> GetDashBoardDetails(string customerId)
+        {
+
+            var userRole = _applicationDBContext.Users.Where(u => u.Email == customerId).FirstOrDefault()?.Rolename ?? "";
+
+
+            var orders = (from order in _applicationDBContext.Orders
+                          where order.Date <= DateTime.Now && order.Date > (DateTime.Now.AddDays(-7))
+                          select new
+                          {
+                              Orderno = order.Ordersid,
+                              TrackingNo= order.TrackingNo,
+                              Status = order.Status                              
+                          }
+                          ).ToList();
+
+            var result = new DashBoardDetails()
+            {
+                OrderCompleted = orders.Where(e => !string.IsNullOrEmpty(e.TrackingNo) ).Count(),
+                OrdersInProgress = orders.Where(e => string.IsNullOrEmpty(e.TrackingNo) && e.Status != "OnHold").Count(),
+                OrderHolds = orders.Where(e => e.Status == "OnHold").Count(),
+                RecentOrders = orders.Count()
+            };
+
+            return Task.FromResult(result);
+        }
     }
 }

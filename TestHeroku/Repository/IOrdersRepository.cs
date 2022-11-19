@@ -12,5 +12,6 @@ namespace IntelliCRMAPIService.Repository
         Task<List<InvoiceResponse>> GetInvoiceDetails(InvoiceRequest request);
         Task<List<LableResponse>> GetLableDetails(LableRequest request);
         Task<bool> UpdateOrderTracking(LableRequest request);
+        Task<List<Orders>> GetOrderDetails(DataRange request);
     }
 }

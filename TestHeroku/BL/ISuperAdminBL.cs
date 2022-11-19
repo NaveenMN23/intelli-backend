@@ -14,5 +14,6 @@ namespace IntelliCRMAPIService.BL
         Task<bool> UpdateUserPriority(List<CustomerPriorityResponse> customerPriorityResponse);
         Task<bool> DeleteUserDetails(string email);
         Task<List<SOADetails>> GetSOADetails(string customerId);
+        Task<DashBoardDetails> GetDashBoardDetails(string customerId);
     }
 }

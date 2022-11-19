@@ -105,5 +105,15 @@ namespace IntelliCRMAPIService.Controllers
 
             return result;
         }
+
+        [HttpGet]
+        [Route("GetDashBoardDetails")]
+        public async Task<DashBoardDetails> GetDashBoardDetails(string customerId)
+        {
+
+            var result = await _superAdminBL.GetDashBoardDetails(customerId);
+
+            return result;
+        }
     }
 }

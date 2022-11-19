@@ -404,5 +404,15 @@ namespace IntelliCRMAPIService.Services
                 return false;
             }
         }
+
+        public async Task<List<Orders>> GetOrderDetails(DataRange request)
+        {
+            var orders = (from order in _applicationDBContext.Orders
+                          where order.Date <= request.To && order.Date > request.From
+                          select order
+                          ).ToList();
+
+            return orders;
+        }
     }
 }
