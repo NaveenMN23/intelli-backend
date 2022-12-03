@@ -35,7 +35,7 @@ namespace IntelliCRMAPIService
 
                     config.AddEnvironmentVariables();
                     config.SetBasePath(env.ContentRootPath)
-                          .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                          .AddJsonFile($"appsettings.{env.EnvironmentName??"Development"}.json", optional: true, reloadOnChange: true);
 
                     if (args != null)
                     {

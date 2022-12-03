@@ -28,16 +28,16 @@ namespace IntelliCRMAPIService
         {
             //var _logger = services.
             //_logger.LogError("ConfigureServices");
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: "AllowOrigin",
-                    builder =>
-                    {
-                        builder.WithOrigins(Configuration.GetValue<string>("Origin"))
-                                            .AllowAnyHeader()
-                                            .AllowAnyMethod();
-                    });
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(name: "AllowOrigin",
+            //        builder =>
+            //        {
+            //            builder.WithOrigins(Configuration.GetValue<string>("Origin"))
+            //                                .AllowAnyHeader()
+            //                                .AllowAnyMethod();
+            //        });
+            //});
 
             services.AddAuthentication().AddJwtBearer("categories_auth_scheme", options =>
             {
@@ -58,23 +58,23 @@ namespace IntelliCRMAPIService
             var connectionString = Configuration.GetConnectionString("IntelliCRMDb");
             var connectionStringPostgres = Configuration.GetConnectionString("WebApiDatabase");
 
-            if (!CurrentEnvironment.IsDevelopment())
-            {
-                //_logger.LogError($"ConfigureServices env--{Environment.GetEnvironmentVariable("DATABASE_URL")}");
-                var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            //if (!CurrentEnvironment.IsDevelopment())
+            //{
+            //    //_logger.LogError($"ConfigureServices env--{Environment.GetEnvironmentVariable("DATABASE_URL")}");
+            //    var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
-                connectionUrl = connectionUrl.Replace("postgres://", string.Empty);
-                var userPassSide = connectionUrl.Split("@")[0];
-                var hostSide = connectionUrl.Split("@")[1];
+            //    connectionUrl = connectionUrl.Replace("postgres://", string.Empty);
+            //    var userPassSide = connectionUrl.Split("@")[0];
+            //    var hostSide = connectionUrl.Split("@")[1];
 
-                var user = userPassSide.Split(":")[0];
-                var password = userPassSide.Split(":")[1];
-                var host = hostSide.Split("/")[0];
-                var database = hostSide.Split("/")[1].Split("?")[0];
+            //    var user = userPassSide.Split(":")[0];
+            //    var password = userPassSide.Split(":")[1];
+            //    var host = hostSide.Split("/")[0];
+            //    var database = hostSide.Split("/")[1].Split("?")[0];
 
-                connectionStringPostgres = $"Host={host};Database={database};Username={user};Password={password};SSL Mode=Require;Trust Server Certificate=true";
+            //    connectionStringPostgres = $"Host={host};Database={database};Username={user};Password={password};SSL Mode=Require;Trust Server Certificate=true";
 
-            }
+            //}
             //services.AddDbContext<ApplicationDBContext>(options =>
             //    options.UseSqlServer(connectionString));
 
@@ -84,7 +84,7 @@ namespace IntelliCRMAPIService
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             services.AddDbContext<PostgresDBContext>(options =>
-                options.UseNpgsql(connectionStringPostgres));
+                options.UseNpgsql(connectionStringPostgres, psql => psql.CommandTimeout(100)));
 
             services.AddControllers();
             //services.AddHealthChecks();
@@ -146,7 +146,7 @@ namespace IntelliCRMAPIService
             //}
 
             //app.UseCors(x => x.SetIsOriginAllowed(origin => origin.Contains(Configuration.GetValue<string>("Origin"))));
-            app.UseCors("AllowOrigin");
+            //app.UseCors("AllowOrigin");
 
             app.UseRouting();
 
