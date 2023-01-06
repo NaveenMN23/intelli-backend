@@ -1,4 +1,4 @@
-﻿using IntelliCRMAPIService.DBContext;
+using IntelliCRMAPIService.DBContext;
 using IntelliCRMAPIService.Model;
 using IntelliCRMAPIService.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -69,89 +69,99 @@ namespace IntelliCRMAPIService.Services
                 }
 
 
-                //Orders newOrder = orders.Select(e => new Orders()
-                //{
-                //    Address1 = e.Address1,
-                //    Address2 = e.Address2,
-                //    City  = e.City,
-                //    Createdby = e.RequestedBy,
-                //    Createddate = DateTime.Now,
-                //    Customername = e.Customername,
-                //    Customerphonenumber = e.Customerphonenumber,
-                //    Date = DateTime.Now,
-                //    Directionsofuse = e.Directionsofuse,
-                //    DoctorName = e.DoctorName,
-                //    Emailaddress = e.Emailaddress,
-                //    Onlinepharmacy = e.Onlinepharmacy,
-                //    OnlinepharmacyName = e.OnlinepharmacyName,
-                //    Onlinepharmacyphonenumber = e.Onlinepharmacyphonenumber,
-                //    Prescribername = e.Prescribername,
-                //    Prescriptionattached = e.Prescriptionattached,
-                //    Province = e.Province,
-                //    Referencenumber = e.Referencenumber,
-                //    Remarks = e.Remarks,
-                //    Rxwarningcautionarynote = e.Rxwarningcautionarynote,    
-                //    Zipcode = e.Zipcode,
-                //    Refill = e.Refill
-                    
-                //}).FirstOrDefault();
 
 
-                var orderResult = await _applicationDBContext.Orders.AddAsync(new Orders(){
-                
-                    Address1 = orders[0].Address1,
-                    Address2 = orders[0].Address2,
-                    City = orders[0].City,
-                    Createdby = orders[0].RequestedBy,
-                    Createddate = DateTime.Now,
-                    Customername = orders[0].Customername,
-                    Customerphonenumber = orders[0].Customerphonenumber,
-                    Date = DateTime.Now,
-                    Directionsofuse = orders[0].Directionsofuse,
-                    DoctorName = orders[0].DoctorName,
-                    Emailaddress = orders[0].Emailaddress,
-                    Onlinepharmacy = orders[0].Onlinepharmacy,
-                    OnlinepharmacyName = orders[0].OnlinepharmacyName,
-                    Onlinepharmacyphonenumber = orders[0].Onlinepharmacyphonenumber.ToString(),
-                    Prescribername = orders[0].Prescribername,
-                    Prescriptionattached = orders[0].Prescriptionattached,
-                    Province = orders[0].Province,
-                    Referencenumber = orders[0].Referencenumber.ToString(),
-                    Remarks = orders[0].Remarks,
-                    Rxwarningcautionarynote = orders[0].Rxwarningcautionarynote,
-                    Zipcode = orders[0].Zipcode,
-                    Refill = orders[0].Refill,
-                    Status = "Confirmed",
-                    Shippingcostperorder = orders[0].Shippingcostperorder.ToString(),
-                    Totalpriceclientpays = orders[0].Totalpriceclientpays.ToString()
+                var emailList = orders.Select(e => e.Emailaddress).Distinct().ToList();
 
-                });
-                _applicationDBContext.SaveChanges();
-
-
-                var orderDetails = orders.Select(e => new OrdersProducts()
+                for (int i = 0; i <= emailList.Count(); i++)
                 {
-                    OrdersID = orderResult.Entity.Ordersid,
-                    Activeingredients = e.Activeingredients,
-                    Category = e.Category,
-                    Dosageform = e.Dosageform,
-                    Equsbrandname = e.Equsbrandname,
-                    Nameonpackage = e.Nameonpackage,
-                    Priceperpackclientpays = e.Priceperpackclientpays.ToString(),
-                    Productid = e.Productid,
-                    Productsourcedfrom = e.Productsourcedfrom,
-                    Totalpacksordered = e.Totalpacksordered.ToString(),
-                    Totalpricecustomerpays = e.Totalpricecustomerpays.ToString(),
-                    Quantity = e.Quantity,
-                    Strength = e.Strength,
-                    Unitsperpack = e.Unitsperpack.ToString(),
-                    Createdby = e.RequestedBy,
-                    Createddate = DateTime.Now,
-                    
-                });
 
-                _applicationDBContext.OrdersProducts.AddRange(orderDetails);
-                _applicationDBContext.SaveChanges();
+                    Orders newOrder = orders.Where(e => e.Emailaddress == emailList[i]).Select(e => new Orders()
+                    {
+                        Address1 = e.Address1,
+                        Address2 = e.Address2,
+                        City = e.City,
+                        Createdby = e.RequestedBy,
+                        Createddate = DateTime.Now,
+                        Customername = e.Customername,
+                        Customerphonenumber = e.Customerphonenumber,
+                        Date = DateTime.Now,
+                        Directionsofuse = e.Directionsofuse,
+                        DoctorName = e.DoctorName,
+                        Emailaddress = e.Emailaddress,
+                        Onlinepharmacy = e.Onlinepharmacy,
+                        OnlinepharmacyName = e.OnlinepharmacyName,
+                        Onlinepharmacyphonenumber = e.Onlinepharmacyphonenumber,
+                        Prescribername = e.Prescribername,
+                        Prescriptionattached = e.Prescriptionattached,
+                        Province = e.Province,
+                        Referencenumber = e.Referencenumber,
+                        Remarks = e.Remarks,
+                        Rxwarningcautionarynote = e.Rxwarningcautionarynote,
+                        Zipcode = e.Zipcode,
+                        Refill = e.Refill
+
+                    }).FirstOrDefault();
+
+                    var orderResult = await _applicationDBContext.Orders.AddAsync(newOrder);
+
+                    //    new Orders()
+                    //{
+
+                    //    Address1 = newOrder.Address1,
+                    //    Address2 = newOrder.Address2,
+                    //    City = newOrder.City,
+                    //    Createdby = newOrder.Createdby,
+                    //    Createddate = DateTime.Now,
+                    //    Customername = newOrder.Customername,
+                    //    Customerphonenumber = newOrder.Customerphonenumber,
+                    //    Date = DateTime.Now,
+                    //    Directionsofuse = newOrder.Directionsofuse,
+                    //    DoctorName = newOrder.DoctorName,
+                    //    Emailaddress = newOrder.Emailaddress,
+                    //    Onlinepharmacy = newOrder.Onlinepharmacy,
+                    //    OnlinepharmacyName = newOrder.OnlinepharmacyName,
+                    //    Onlinepharmacyphonenumber = newOrder.Onlinepharmacyphonenumber.ToString(),
+                    //    Prescribername = newOrder.Prescribername,
+                    //    Prescriptionattached = newOrder.Prescriptionattached,
+                    //    Province = newOrder.Province,
+                    //    Referencenumber = newOrder.Referencenumber.ToString(),
+                    //    Remarks = newOrder.Remarks,
+                    //    Rxwarningcautionarynote = newOrder.Rxwarningcautionarynote,
+                    //    Zipcode = newOrder.Zipcode,
+                    //    Refill = newOrder.Refill,
+                    //    Status = "Confirmed",
+                    //    Shippingcostperorder = newOrder.Shippingcostperorder.ToString(),
+                    //    Totalpriceclientpays = newOrder.Totalpriceclientpays.ToString()
+
+                    //});
+                    _applicationDBContext.SaveChanges();
+
+
+                    var orderDetails = orders.Where(e => e.Emailaddress == orderResult.Entity.Emailaddress).Select(e => new OrdersProducts()
+                    {
+                        OrdersID = orderResult.Entity.Ordersid,
+                        Activeingredients = e.Activeingredients,
+                        Category = e.Category,
+                        Dosageform = e.Dosageform,
+                        Equsbrandname = e.Equsbrandname,
+                        Nameonpackage = e.Nameonpackage,
+                        Priceperpackclientpays = e.Priceperpackclientpays.ToString(),
+                        Productid = e.Productid,
+                        Productsourcedfrom = e.Productsourcedfrom,
+                        Totalpacksordered = e.Totalpacksordered.ToString(),
+                        Totalpricecustomerpays = e.Totalpricecustomerpays.ToString(),
+                        Quantity = e.Quantity,
+                        Strength = e.Strength,
+                        Unitsperpack = e.Unitsperpack.ToString(),
+                        Createdby = e.RequestedBy,
+                        Createddate = DateTime.Now,
+
+                    });
+
+                    _applicationDBContext.OrdersProducts.AddRange(orderDetails);
+                    _applicationDBContext.SaveChanges();
+                }
 
             }
             catch(Exception ex)
