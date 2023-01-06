@@ -43,7 +43,7 @@
         public string Priceperpackclientpays { get; set; }
         public string Shippingcostperorder { get; set; }
         public string Totalpriceclientpays { get; set; }
-        public string TrackingNo { get; set; }
+        public string? TrackingNo { get; set; }
 
     }
 }
