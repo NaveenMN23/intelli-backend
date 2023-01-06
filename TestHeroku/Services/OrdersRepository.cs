@@ -99,7 +99,12 @@ namespace IntelliCRMAPIService.Services
                         Remarks = e.Remarks,
                         Rxwarningcautionarynote = e.Rxwarningcautionarynote,
                         Zipcode = e.Zipcode,
-                        Refill = e.Refill
+                        Refill = e.Refill,                        
+                        Country = e.Country,
+                        Ordernumber = e.Ordernumber,
+                        Shippingcostperorder = e.Shippingcostperorder,
+                        Status = "Confirmed" ,
+                        Totalpriceclientpays = e.Totalpriceclientpays
 
                     }).FirstOrDefault();
 
