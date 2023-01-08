@@ -2,6 +2,9 @@ using IntelliCRMAPIService.DBContext;
 using IntelliCRMAPIService.Model;
 using IntelliCRMAPIService.Repository;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using NpgsqlTypes;
+using System.Data;
 using System.Linq;
 using TestHeroku.Model;
 
@@ -10,15 +13,17 @@ namespace IntelliCRMAPIService.Services
     public class OrdersRepository : RepositoryBase<Orders>, IOrdersRepository
     {
         private readonly PostgresDBContext _applicationDBContext;
-        public OrdersRepository(PostgresDBContext applicationDBContext)
+        private readonly IProductRepository _productRepository;
+        public OrdersRepository(PostgresDBContext applicationDBContext, IProductRepository productRepository)
             :base(applicationDBContext)
         {
             _applicationDBContext = applicationDBContext;
+            _productRepository = productRepository;
         }
 
         public async Task<List<string>> CreateOrder(IList<OrderDO> orders)
         {
-             List<string> errorMessage = new List<string>();
+            List<string> errorMessage = new List<string>();
 
             try
             {
@@ -204,7 +209,7 @@ namespace IntelliCRMAPIService.Services
                               City = o.City,
                               Country = o.Country,
                               CustomerId = o.Emailaddress,
-                              OrderId = o.Ordersid,
+                              OrderId = o.Ordernumber,
                               PharmacyNumber = o.Onlinepharmacyphonenumber,
                               ShippingCost = o.Shippingcostperorder,
                               TotalCost = o.Totalpriceclientpays,
@@ -246,7 +251,7 @@ namespace IntelliCRMAPIService.Services
                               City = o.City,
                               Country = o.Country,
                               CustomerId = o.Emailaddress,
-                              OrderId = o.Ordersid,
+                              OrderId = o.Ordernumber,
                               PharmacyNumber = o.Onlinepharmacyphonenumber,
                               ShippingCost = o.Shippingcostperorder,
                               TotalCost = o.Totalpriceclientpays,
