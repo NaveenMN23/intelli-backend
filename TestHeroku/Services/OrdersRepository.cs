@@ -18,65 +18,68 @@ namespace IntelliCRMAPIService.Services
 
         public async Task<List<string>> CreateOrder(IList<OrderDO> orders)
         {
-            List<string> errorMessage = new List<string>();
+             List<string> errorMessage = new List<string>();
 
             try
             {
-                var email = orders.First().Emailaddress?.ToLower();
-                var customerProduct = _applicationDBContext.Customerproduct.Where(c => c.Email == email);
 
-                var productAssigmentValidation = (from o in orders
-                                         join p in customerProduct on o.Productid equals p.Productid
-                                         into tempOrder
-                                         from t in tempOrder.DefaultIfEmpty()
-                                         where t == null
-                                         select o.Productid
-                                         ).Distinct().ToList();
+                var emailList = orders.Select(e => new { Emailaddress = e.Emailaddress, Ordernumber = e.Ordernumber }).Distinct().ToList();
 
-
-                if (productAssigmentValidation.Any())
+                for (int i = 0; i < emailList.Count(); i++)
                 {
-                    errorMessage.Add($"Below are the products are not assigned to {email}. " + String.Join(",", productAssigmentValidation)); 
-                }
+                    var email = emailList[i];
+                    var emailaddres = emailList[i].Emailaddress;
 
-                var productQuantityValidation = (from o in orders
-                                         join p in _applicationDBContext.Productmaster on o.Productid equals p.Productid
-                                         where o.Quantity > p.Qty
-                                         select o.Productid
-                                         ).Distinct().ToList();
+                    var customerProduct = _applicationDBContext.Customerproduct.Where(c => c.Email == emailaddres);
 
-                var invalidProduct = (from o in orders
-                                                  join p in _applicationDBContext.Productmaster on o.Productid equals p.Productid
-                                                  into tempOrder
-                                                  from t in tempOrder.DefaultIfEmpty()
-                                                  where t == null
-                                                  select o.Productid
-                                         ).Distinct().ToList();
-                if (invalidProduct.Any())
-                {
-                    errorMessage.Add("Below are the invalid products. " + String.Join(",", productAssigmentValidation));
-                }
+                    var tempOrders = orders.Where(e => e.Emailaddress == email.Emailaddress && e.Ordernumber == email.Ordernumber);
 
-                if (productQuantityValidation.Any())
-                {
-                    errorMessage.Add("Below are the products are not in stack. " + String.Join(",", invalidProduct));
-                }
+                    var productAssigmentValidation = (from o in tempOrders
+                                                      join p in customerProduct on o.Productid equals p.Productid
+                                                      into tempOrder
+                                                      from t in tempOrder.DefaultIfEmpty()
+                                                      where t == null
+                                                      select o.Productid
+                                             ).Distinct().ToList();
 
 
-                if(errorMessage.Any())
-                {
-                    return errorMessage;
-                }
+                    if (productAssigmentValidation.Any())
+                    {
+                        errorMessage.Add($"Below are the products are not assigned to {email}. " + String.Join(",", productAssigmentValidation));
+                    }
+
+                    var productQuantityValidation = (from o in tempOrders
+                                                     join p in _applicationDBContext.Productmaster on o.Productid equals p.Productid
+                                                     where o.Quantity > p.Qty
+                                                     select o.Productid
+                                             ).Distinct().ToList();
+
+                    var invalidProduct = (from o in tempOrders
+                                          join p in _applicationDBContext.Productmaster on o.Productid equals p.Productid
+                                          into tempOrder
+                                          from t in tempOrder.DefaultIfEmpty()
+                                          where t == null
+                                          select o.Productid
+                                             ).Distinct().ToList();
 
 
+                    if (invalidProduct.Any())
+                    {
+                        errorMessage.Add("Below are the invalid products. " + String.Join(",", productAssigmentValidation));
+                    }
+
+                    if (productQuantityValidation.Any())
+                    {
+                        errorMessage.Add("Below are the products are not in stack. " + String.Join(",", invalidProduct));
+                    }
 
 
-                var emailList = orders.Select(e => e.Emailaddress).Distinct().ToList();
+                    if (errorMessage.Any())
+                    {
+                        continue;
+                    }
 
-                for (int i = 0; i <= emailList.Count(); i++)
-                {
-
-                    Orders newOrder = orders.Where(e => e.Emailaddress == emailList[i]).Select(e => new Orders()
+                    Orders newOrder = tempOrders.Select(e => new Orders()
                     {
                         Address1 = e.Address1,
                         Address2 = e.Address2,
@@ -99,51 +102,20 @@ namespace IntelliCRMAPIService.Services
                         Remarks = e.Remarks,
                         Rxwarningcautionarynote = e.Rxwarningcautionarynote,
                         Zipcode = e.Zipcode,
-                        Refill = e.Refill,                        
+                        Refill = e.Refill,
                         Country = e.Country,
                         Ordernumber = e.Ordernumber,
                         Shippingcostperorder = e.Shippingcostperorder,
-                        Status = "Confirmed" ,
+                        Status = "Confirmed",
                         Totalpriceclientpays = e.Totalpriceclientpays
 
                     }).FirstOrDefault();
 
                     var orderResult = await _applicationDBContext.Orders.AddAsync(newOrder);
-
-                    //    new Orders()
-                    //{
-
-                    //    Address1 = newOrder.Address1,
-                    //    Address2 = newOrder.Address2,
-                    //    City = newOrder.City,
-                    //    Createdby = newOrder.Createdby,
-                    //    Createddate = DateTime.Now,
-                    //    Customername = newOrder.Customername,
-                    //    Customerphonenumber = newOrder.Customerphonenumber,
-                    //    Date = DateTime.Now,
-                    //    Directionsofuse = newOrder.Directionsofuse,
-                    //    DoctorName = newOrder.DoctorName,
-                    //    Emailaddress = newOrder.Emailaddress,
-                    //    Onlinepharmacy = newOrder.Onlinepharmacy,
-                    //    OnlinepharmacyName = newOrder.OnlinepharmacyName,
-                    //    Onlinepharmacyphonenumber = newOrder.Onlinepharmacyphonenumber.ToString(),
-                    //    Prescribername = newOrder.Prescribername,
-                    //    Prescriptionattached = newOrder.Prescriptionattached,
-                    //    Province = newOrder.Province,
-                    //    Referencenumber = newOrder.Referencenumber.ToString(),
-                    //    Remarks = newOrder.Remarks,
-                    //    Rxwarningcautionarynote = newOrder.Rxwarningcautionarynote,
-                    //    Zipcode = newOrder.Zipcode,
-                    //    Refill = newOrder.Refill,
-                    //    Status = "Confirmed",
-                    //    Shippingcostperorder = newOrder.Shippingcostperorder.ToString(),
-                    //    Totalpriceclientpays = newOrder.Totalpriceclientpays.ToString()
-
-                    //});
                     _applicationDBContext.SaveChanges();
 
 
-                    var orderDetails = orders.Where(e => e.Emailaddress == orderResult.Entity.Emailaddress).Select(e => new OrdersProducts()
+                    var orderDetails = tempOrders.Select(e => new OrdersProducts()
                     {
                         OrdersID = orderResult.Entity.Ordersid,
                         Activeingredients = e.Activeingredients,
@@ -166,10 +138,43 @@ namespace IntelliCRMAPIService.Services
 
                     _applicationDBContext.OrdersProducts.AddRange(orderDetails);
                     _applicationDBContext.SaveChanges();
-                }
 
+                    //try
+                    //{
+                    //    string orderstr = string.Join(",", tempOrders.Select(e => e.Productid + "|" + e.Quantity).ToList());
+
+                    //     var b = _applicationDBContext.Database.GetConnectionString();
+
+                    //        using (var conn = new Npgsql.NpgsqlConnection(connectionString: b))
+                    //        {
+                    //            conn.Open();
+                    //            using (var tran = conn.BeginTransaction())
+                    //            using (var command = conn.CreateCommand())
+                    //            {
+                    //                command.CommandText = $"call public.updateproductquantity('"+orderstr+"')";
+                    //                command.CommandType = CommandType.Text;
+                    //                //var objParam = new NpgsqlParameter("@products", NpgsqlDbType.Varchar)
+                    //                //{ Direction = ParameterDirection.Input };
+                    //                //command.Parameters.Add(objParam);
+                    //                //command.Parameters["@products"].Value= orderstr;
+                    //                //var objParam1 = new NpgsqlParameter("@addition", NpgsqlDbType.Boolean)
+                    //                //{ Direction = ParameterDirection.Input };
+                    //                //command.Parameters.Add(objParam1);
+                    //                //command.Parameters["@addition"].Value = false;
+                    //                var count = command.ExecuteNonQuery();
+
+                    //            }
+                    //        }
+                        
+                    //}
+                    //catch(Exception ex)
+                    //{
+
+                    //}
+
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
