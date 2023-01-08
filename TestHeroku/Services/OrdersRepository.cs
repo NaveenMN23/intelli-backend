@@ -139,38 +139,38 @@ namespace IntelliCRMAPIService.Services
                     _applicationDBContext.OrdersProducts.AddRange(orderDetails);
                     _applicationDBContext.SaveChanges();
 
-                    //try
-                    //{
-                    //    string orderstr = string.Join(",", tempOrders.Select(e => e.Productid + "|" + e.Quantity).ToList());
+                    try
+                    {
+                        string orderstr = string.Join(",", tempOrders.Select(e => e.Productid + "|" + e.Quantity).ToList());
 
-                    //     var b = _applicationDBContext.Database.GetConnectionString();
+                         var b = _applicationDBContext.Database.GetConnectionString();
 
-                    //        using (var conn = new Npgsql.NpgsqlConnection(connectionString: b))
-                    //        {
-                    //            conn.Open();
-                    //            using (var tran = conn.BeginTransaction())
-                    //            using (var command = conn.CreateCommand())
-                    //            {
-                    //                command.CommandText = $"call public.updateproductquantity('"+orderstr+"')";
-                    //                command.CommandType = CommandType.Text;
-                    //                //var objParam = new NpgsqlParameter("@products", NpgsqlDbType.Varchar)
-                    //                //{ Direction = ParameterDirection.Input };
-                    //                //command.Parameters.Add(objParam);
-                    //                //command.Parameters["@products"].Value= orderstr;
-                    //                //var objParam1 = new NpgsqlParameter("@addition", NpgsqlDbType.Boolean)
-                    //                //{ Direction = ParameterDirection.Input };
-                    //                //command.Parameters.Add(objParam1);
-                    //                //command.Parameters["@addition"].Value = false;
-                    //                var count = command.ExecuteNonQuery();
-
-                    //            }
-                    //        }
+                            using (var conn = new Npgsql.NpgsqlConnection(connectionString: b))
+                            {
+                                conn.Open();
+                              //  using (var tran = conn.BeginTransaction())
+                                using (var command = conn.CreateCommand())
+                                {
+                                    command.CommandText = $"call public.updateproductquantity('"+orderstr+"')";
+                                    command.CommandType = CommandType.Text;
+                                    //var objParam = new NpgsqlParameter("@products", NpgsqlDbType.Varchar)
+                                    //{ Direction = ParameterDirection.Input };
+                                    //command.Parameters.Add(objParam);
+                                    //command.Parameters["@products"].Value= orderstr;
+                                    //var objParam1 = new NpgsqlParameter("@addition", NpgsqlDbType.Boolean)
+                                    //{ Direction = ParameterDirection.Input };
+                                    //command.Parameters.Add(objParam1);
+                                    //command.Parameters["@addition"].Value = false;
+                                    var count = command.ExecuteNonQuery();
+                                    
+                                }
+                            }
                         
-                    //}
-                    //catch(Exception ex)
-                    //{
+                    }
+                    catch(Exception ex)
+                    {
 
-                    //}
+                    }
 
                 }
             }
